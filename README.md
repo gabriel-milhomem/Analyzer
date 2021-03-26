@@ -1,21 +1,22 @@
 # Analyzer
 
-## Deploy
+## Deploy on Heroku
+
+[Analyzer Link](https://analyzer-milhomem.herokuapp.com/)
 
 
+## How to run the project ?
 
-## Como rodar o projeto?
-
-1. Instale o NodeJS [https://nodejs.org/en/](https://nodejs.org/en/)
-2. Instale o Yarn [https://yarnpkg.com/](https://yarnpkg.com/) 
-3. Clone o projeto
-4. Instale as dependências
+1. Install NodeJS [https://nodejs.org/en/](https://nodejs.org/en/)
+2. Install Yarn [https://yarnpkg.com/](https://yarnpkg.com/) 
+3. Clone the project
+4. Install the dependencies
 
   ```bash
   yarn
   ```
 
-5. Rode a aplicação 🙂
+5. Run the application 🙂
 
   ```bash
   yarn dev

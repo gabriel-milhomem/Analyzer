@@ -34,8 +34,8 @@
     "import/prefer-default-export": "off",
     "space-before-function-paren": "off",
     "react/prop-types": "off",
-    "no-console": "off",
     "semi": [2, "always"],
+    "no-undef": "off",
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "@typescript-eslint/explicit-function-return-type": [
