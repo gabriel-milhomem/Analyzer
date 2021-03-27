@@ -6,8 +6,6 @@ export const Menu = styled.nav`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
-  position: relative;
-  z-index: 1;
 
   margin-top: -4.5rem;
 
@@ -24,5 +22,5 @@ export const Menu = styled.nav`
 
 export const StyledHome = styled.main`
   margin: 0 auto;
-  max-width: 1120px !important;
+  max-width: 1120px;
 `;

@@ -13,6 +13,7 @@ interface CardProps {
   subtitle: string;
   cardType: keyof Dispatcher;
   backColor: string;
+  openModal?: () => void;
 }
 
 export function Card(props: CardProps): JSX.Element {
@@ -26,7 +27,11 @@ export function Card(props: CardProps): JSX.Element {
   const icon = iconDispatcher[cardType];
 
   return (
-    <StyledCard cardType={cardType} backColor={backColor}>
+    <StyledCard
+      onClick={props?.openModal}
+      cardType={cardType}
+      backColor={backColor}
+    >
       <TopLine>
         <h2> {title} </h2>
         {icon}

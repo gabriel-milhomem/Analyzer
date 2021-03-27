@@ -13,7 +13,7 @@ interface TextProps {
 
 export const StyledCard = styled.button<StyledCardProps>`
   background: ${props => props.backColor};
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 1.75rem;
   color: ${props =>
     props.cardType === 'show' ? '#fff' : 'var(--title-color)'};
 
@@ -36,6 +36,7 @@ export const StyledCard = styled.button<StyledCardProps>`
   ${props =>
     props.cardType !== 'info' &&
     css`
+      box-shadow: var(--shadow);
       &:hover {
         filter: brightness(0.9);
       }

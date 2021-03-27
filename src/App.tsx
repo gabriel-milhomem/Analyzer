@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+
 import { Header } from './components/Header';
 import { Dashboard } from './pages/Dashboard';
 import { Home } from './pages/Home';

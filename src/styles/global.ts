@@ -29,7 +29,7 @@ export default css`
     background: var(--background);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    color: var(--text-user);
+    color: var(--text-body);
   }
 
   ol,
@@ -89,16 +89,38 @@ export default css`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    ${small} {
+      align-items: flex-end;
+    }
   }
 
   .react-modal-content {
     width: 100%;
-    max-width: 500px;
+    max-width: 480px;
 
     background: #f0f1f5;
     position: relative;
 
     padding: 2rem 3rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius);
+
+    ${small} {
+      border: 0;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+    }
+  }
+
+  .react-modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+
+    transition: filter 0.2s;
+
+    &:hover {
+      filter: brightness(0.8);
+    }
   }
 `;
