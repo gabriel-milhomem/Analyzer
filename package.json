@@ -6,11 +6,10 @@
   "scripts": {
     "dev": "webpack serve",
     "build": "cross-env NODE_ENV=production webpack",
-    "lint": "eslint --ext ts,tsx --fix",
-    "format": "prettier \"**/*.+(ts|tsx)\" --write"
+    "lint": "eslint --ext js, jsx, ts,tsx --fix",
+    "format": "prettier \"**/*.+(js|jsx|ts|tsx)\" --write"
   },
   "dependencies": {
-    "clean-webpack-plugin": "^3.0.0",
     "express": "^4.17.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -32,10 +31,12 @@
     "@types/node": "^14.14.35",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.2",
+    "@types/react-router-dom": "^5.1.7",
     "@types/styled-components": "^5.1.9",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
     "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
     "commitizen": "^4.2.3",
     "cross-env": "^7.0.3",
     "css-loader": "^5.1.2",

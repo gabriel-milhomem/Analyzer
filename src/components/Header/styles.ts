@@ -10,11 +10,9 @@ export const Content = styled.div`
   justify-content: space-between;
 
   max-width: 1120px;
-  width: 95%;
   margin: 0 auto;
 
-  padding-top: 1.5rem;
-  padding-bottom: 8rem;
+  padding: 1.5rem 1rem 8rem;
 `;
 
 export const LeftBox = styled.div`
@@ -23,8 +21,8 @@ export const LeftBox = styled.div`
   cursor: pointer;
 
   img {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 3rem;
+    height: 3rem;
   }
 `;
 
