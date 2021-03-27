@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 
-import { mediaTablet, mediaMobile } from '../utils/media';
+import { small, medium, large } from '../utils/media';
 
 export default css`
   *,
@@ -12,12 +12,16 @@ export default css`
   }
 
   html {
-    ${mediaTablet} {
+    ${large} {
       font-size: 93.75%;
     }
 
-    ${mediaMobile} {
+    ${medium} {
       font-size: 87.5%;
+    }
+
+    ${small} {
+      font-size: 68.75%;
     }
   }
 
@@ -51,6 +55,10 @@ export default css`
   a {
     color: inherit;
     text-decoration: none;
+    cursor: pointer;
+  }
+
+  button {
     cursor: pointer;
   }
 
