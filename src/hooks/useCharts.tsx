@@ -6,7 +6,7 @@ import {
   useState
 } from 'react';
 
-import { warning } from '../libs/toast';
+import { warning, error } from '../libs/toast';
 import api from '../services/api';
 import { useLoading } from './useLoading';
 import { useLocalStorage } from './useLocalStorage';
@@ -31,14 +31,18 @@ type ChartInput = Omit<Charts, 'id' | 'updatedAt'>;
 interface ChartContextData {
   charts: Charts[];
   createChart: (chart: ChartInput) => Promise<void>;
+  updateChart: (chart: ChartInput, id: number) => Promise<void>;
   loading: boolean;
-  setRefresh: (num: number) => void;
+  setRefresh: (number: number) => void;
   refresh: number;
+  editChartId: number;
+  setEditChartId: (number: number) => void;
 }
 
 const ChartContext = createContext<ChartContextData>({} as ChartContextData);
 
 function ChartProvider({ children }: AppProviderProps): JSX.Element {
+  const [editChartId, setEditChartId] = useState(0);
   const [refresh, setRefresh] = useState(0);
   const [charts, setCharts] = useLocalStorage<Charts[]>('charts', []);
 
@@ -48,10 +52,15 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
 
   useEffect(() => {
     async function getCharts(): Promise<void> {
-      const { data } = await api.get('/chart');
-      setCharts([...data].reverse());
-      if (data.length === 0) {
-        warning("It's empty create new chart");
+      try {
+        const { data } = await api.get('/chart');
+        setCharts([...data].reverse());
+        if (data.length === 0) {
+          warning("It's empty create new chart");
+        }
+      } catch (err) {
+        console.error(err);
+        error(err.response.data.error);
       }
     }
 
@@ -64,9 +73,24 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
     setCharts([response.data, ...charts]);
   }
 
+  async function updateChart(chart: ChartInput, id: number): Promise<void> {
+    const response = await api.put(`/chart/${id}`, chart);
+    const auxCharts = charts.filter(chart => chart.id !== id);
+    setCharts([response.data, ...auxCharts]);
+  }
+
   return (
     <ChartContext.Provider
-      value={{ charts, createChart, loading, setRefresh, refresh }}
+      value={{
+        charts,
+        createChart,
+        updateChart,
+        loading,
+        setRefresh,
+        refresh,
+        editChartId,
+        setEditChartId
+      }}
     >
       {children}
     </ChartContext.Provider>

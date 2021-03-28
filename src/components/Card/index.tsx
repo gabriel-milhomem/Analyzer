@@ -1,5 +1,7 @@
 import { IoBarChartOutline, IoEyeOutline } from 'react-icons/io5';
+import { useHistory } from 'react-router-dom';
 
+import { useCharts } from '../../hooks/useCharts';
 import { StyledCard, TopLine, Text } from './styles';
 
 interface Dispatcher {
@@ -17,7 +19,9 @@ interface CardProps {
 }
 
 export function Card(props: CardProps): JSX.Element {
+  const { setEditChartId, charts } = useCharts();
   const { title, subtitle, cardType, backColor } = props;
+  const history = useHistory();
   const iconDispatcher: Dispatcher = {
     show: <IoEyeOutline />,
     info: null,
@@ -26,9 +30,19 @@ export function Card(props: CardProps): JSX.Element {
 
   const icon = iconDispatcher[cardType];
 
+  function handleClickCard(): void {
+    if (cardType === 'create') {
+      setEditChartId(0);
+      props.openModal!();
+      return;
+    }
+
+    history.push(`/chart/${charts[0].id}`);
+  }
+
   return (
     <StyledCard
-      onClick={props?.openModal}
+      onClick={handleClickCard}
       cardType={cardType}
       backColor={backColor}
     >

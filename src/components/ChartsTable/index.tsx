@@ -1,5 +1,6 @@
 import { BsEye, BsPencil, BsTrash, BsTrash2 } from 'react-icons/bs';
 import Loader from 'react-loader-spinner';
+import { useHistory } from 'react-router-dom';
 
 import { useCharts } from '../../hooks/useCharts';
 import {
@@ -19,7 +20,8 @@ interface ChartsTableProps {
 export function ChartsTable({
   openModal
 }: ChartsTableProps): JSX.Element | null {
-  const { charts, loading, refresh } = useCharts();
+  const history = useHistory();
+  const { charts, loading, refresh, setEditChartId } = useCharts();
   if (refresh === 0) return null;
 
   if (loading) {
@@ -56,17 +58,27 @@ export function ChartsTable({
             const { id, title, updatedAt, points } = chart;
             const date = new Date(updatedAt);
             return (
-              <tr key={id}>
+              <tr key={id} onClick={() => history.push(`/chart/${id}`)}>
                 <td>
                   <BsEye />
                 </td>
                 <td> {title} </td>
                 <td> {points} </td>
                 <td>{Intl.DateTimeFormat('pt-BR').format(date)}</td>
-                <td>
-                  <BsPencil onClick={() => openModal()} />
+                <td
+                  onClick={event => {
+                    event.stopPropagation();
+                    setEditChartId(id);
+                    openModal();
+                  }}
+                >
+                  <BsPencil />
                 </td>
-                <td>
+                <td
+                  onClick={event => {
+                    event.stopPropagation();
+                  }}
+                >
                   <BsTrash className="red-svg" />
                 </td>
               </tr>

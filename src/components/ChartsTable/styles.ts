@@ -25,6 +25,7 @@ export const Table = styled.table`
 
   tr {
     border-radius: var(--radius);
+    cursor: pointer;
   }
 `;
 

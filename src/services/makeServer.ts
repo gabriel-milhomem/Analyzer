@@ -6,7 +6,7 @@ export default new Server({
   },
 
   routes() {
-    this.timing = 500;
+    this.timing = 1000;
     this.namespace = 'api';
 
     this.get('/chart', schema => {
@@ -23,6 +23,7 @@ export default new Server({
     this.put('/chart/:id', (schema, request) => {
       const body = JSON.parse(request.requestBody);
       const id = request.params.id;
+
       body.updatedAt = new Date();
 
       return schema.db.charts.update(id, body);

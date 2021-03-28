@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { large, small } from '../../utils/media';
+import { large, medium } from '../../utils/media';
 
 interface StyledCardProps {
   cardType: string;
@@ -25,7 +25,7 @@ export const StyledCard = styled.button<StyledCardProps>`
     min-width: 27rem;
   }
 
-  ${small} {
+  ${medium} {
     display: ${props => props.cardType === 'info' && 'none'};
   }
 
@@ -47,6 +47,7 @@ export const StyledCard = styled.button<StyledCardProps>`
     css`
       outline: none;
       cursor: initial;
+      pointer-events: none;
       padding: 1.5rem 0;
 
       display: flex;

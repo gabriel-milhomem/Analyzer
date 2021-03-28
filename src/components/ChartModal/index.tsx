@@ -1,4 +1,4 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import Modal from 'react-modal';
 
 import closeImg from '../../assets/close.svg';
@@ -19,7 +19,7 @@ export function ChartModal({
   isOpen,
   onModalClose
 }: ChartModalProps): JSX.Element {
-  const { createChart } = useCharts();
+  const { createChart, charts, editChartId, updateChart } = useCharts();
   const [title, setTitle] = useState('');
   const [error, setError] = useState('');
   const [maximum, setMaximum] = useState(NaN);
@@ -27,6 +27,21 @@ export function ChartModal({
   const [frequency, setFrequency] = useState(NaN);
   const [intervalS, setIntervalS] = useState(NaN);
   const [disabled, setDisabled] = useState(false);
+
+  const headline = editChartId === 0 ? 'Create a new chart' : 'Edit your chart';
+  const successMsg = editChartId === 0 ? 'created' : 'edited';
+
+  useEffect(() => {
+    if (editChartId) {
+      const chart = charts.find(chart => chart.id === editChartId)!;
+      const { title, maximum, minimum, frequency, intervalS } = chart;
+      setTitle(title);
+      setMaximum(maximum);
+      setMinimum(minimum);
+      setFrequency(frequency);
+      setIntervalS(intervalS);
+    }
+  }, [editChartId]);
 
   async function handleOnNewChart(event: FormEvent): Promise<void> {
     try {
@@ -57,10 +72,13 @@ export function ChartModal({
       };
 
       data = Utils.sanitizeHtml(data);
-      createChart(data);
+
+      editChartId
+        ? await updateChart(data, editChartId)
+        : await createChart(data);
 
       onModalClose();
-      success('Chart successfully created');
+      success(`Chart successfully ${successMsg}!`);
       reset();
     } catch (err) {
       console.error(err);
@@ -107,7 +125,7 @@ export function ChartModal({
       isOpen={isOpen}
       onRequestClose={onModalClose}
     >
-      <Title> Create a new chart </Title>
+      <Title> {headline} </Title>
       <button
         type="button"
         className="react-modal-close"
