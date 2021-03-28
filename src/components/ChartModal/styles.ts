@@ -33,11 +33,6 @@ export const Input = styled.input<InputProps>`
     font-size: 1rem;
   }
 
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
   & + input {
     margin-top: 1.25rem;
   }
@@ -50,7 +45,7 @@ export const Error = styled.div`
   p {
     color: var(--red);
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 500;
   }
 `;

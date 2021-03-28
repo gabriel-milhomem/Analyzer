@@ -102,7 +102,7 @@ export default css`
     background: #f0f1f5;
     position: relative;
 
-    padding: 2rem 3rem;
+    padding: 3rem;
     border-radius: var(--radius);
 
     ${small} {
@@ -121,6 +121,11 @@ export default css`
 
     &:hover {
       filter: brightness(0.8);
+    }
+
+    ${small} {
+      top: 3.35rem;
+      right: 3rem;
     }
   }
 `;

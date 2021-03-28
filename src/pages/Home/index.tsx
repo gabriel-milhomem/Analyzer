@@ -20,10 +20,7 @@ export function Home(): JSX.Element {
           backColor="var(--shape)"
           openModal={handleOpenChartModal}
         />
-        <ChartModal
-          isOpen={chartModal}
-          onRequestClose={handleCloseChartModal}
-        />
+        <ChartModal isOpen={chartModal} onModalClose={handleCloseChartModal} />
         <Card
           title="You can build, visualize, analyse"
           subtitle="With our graphic generator system"

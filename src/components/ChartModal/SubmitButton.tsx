@@ -90,4 +90,8 @@ const Button = styled.button<ButtonProps>`
       transform: scale(0.7);
     }
   }
+
+  &:focus {
+    outline: 0.001px solid transparent;
+  }
 `;
