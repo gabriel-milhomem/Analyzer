@@ -1,4 +1,4 @@
-import { Server, Model } from 'miragejs';
+import { Server, Model, Response } from 'miragejs';
 
 export default new Server({
   models: {
@@ -6,7 +6,7 @@ export default new Server({
   },
 
   routes() {
-    this.timing = 1000;
+    this.timing = 400;
     this.namespace = 'api';
 
     this.get('/chart', schema => {
@@ -27,6 +27,19 @@ export default new Server({
       body.updatedAt = new Date();
 
       return schema.db.charts.update(id, body);
+    });
+
+    this.delete('/chart/:id', (schema, request) => {
+      const id = request.params.id;
+      schema.db.charts.remove(id);
+
+      return new Response(204);
+    });
+
+    this.delete('/chart', schema => {
+      schema.db.charts.remove();
+
+      return new Response(204);
     });
   },
 

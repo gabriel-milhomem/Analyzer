@@ -5,7 +5,7 @@ export default css`
     --background: #e5e5e5;
     --input-background: #e7e9ee;
     --shape: #ffffff;
-
+    --yellow: #f1c40f;
     --text-body: #969cb3;
     --text-user: #333333;
     --title-color: #363f5f;

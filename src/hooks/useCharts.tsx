@@ -6,7 +6,7 @@ import {
   useState
 } from 'react';
 
-import { warning, error } from '../libs/toast';
+import { warning, error, success } from '../libs/toast';
 import api from '../services/api';
 import { useLoading } from './useLoading';
 import { useLocalStorage } from './useLocalStorage';
@@ -32,6 +32,8 @@ interface ChartContextData {
   charts: Charts[];
   createChart: (chart: ChartInput) => Promise<void>;
   updateChart: (chart: ChartInput, id: number) => Promise<void>;
+  deleteChart: (id: number) => Promise<void>;
+  deleteAllChart: () => Promise<void>;
   loading: boolean;
   setRefresh: (number: number) => void;
   refresh: number;
@@ -48,15 +50,13 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
 
   const [loading, setLoading] = useLoading();
 
-  console.log(refresh);
-
   useEffect(() => {
     async function getCharts(): Promise<void> {
       try {
         const { data } = await api.get('/chart');
         setCharts([...data].reverse());
         if (data.length === 0) {
-          warning("It's empty create new chart");
+          warning("It's empty, create a new chart");
         }
       } catch (err) {
         console.error(err);
@@ -79,12 +79,39 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
     setCharts([response.data, ...auxCharts]);
   }
 
+  async function deleteChart(id: number): Promise<void> {
+    try {
+      await api.delete(`/chart/${id}`);
+
+      const auxCharts = charts.filter(chart => chart.id !== id);
+      success('Chart successfully deleted');
+      setCharts([...auxCharts]);
+    } catch (err) {
+      console.error(err);
+      error(err.response.data.error);
+    }
+  }
+
+  async function deleteAllChart(): Promise<void> {
+    try {
+      await api.delete('/chart');
+
+      success('All charts have been deleted');
+      setCharts([]);
+    } catch (err) {
+      console.error(err);
+      error(err.response.data.error);
+    }
+  }
+
   return (
     <ChartContext.Provider
       value={{
         charts,
         createChart,
         updateChart,
+        deleteChart,
+        deleteAllChart,
         loading,
         setRefresh,
         refresh,

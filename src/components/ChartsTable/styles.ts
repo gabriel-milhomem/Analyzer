@@ -1,4 +1,4 @@
-import { transparentize } from 'polished';
+import { transparentize, darken } from 'polished';
 import styled from 'styled-components';
 
 export const Container = styled.section`
@@ -25,7 +25,6 @@ export const Table = styled.table`
 
   tr {
     border-radius: var(--radius);
-    cursor: pointer;
   }
 `;
 
@@ -55,6 +54,17 @@ export const Body = styled.tbody`
 
     &:nth-child(3) {
       color: var(--green);
+    }
+
+    &:nth-child(1),
+    &:nth-child(5),
+    &:nth-child(6) {
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+
+      &:hover {
+        background: ${darken(0.15, '#fff')};
+      }
     }
   }
 `;
@@ -96,7 +106,7 @@ export const DeleteButton = styled.button`
   padding: 0 1rem;
 
   &:hover {
-    filter: brightness(0.9);
+    filter: brightness(0.95);
   }
 
   p {

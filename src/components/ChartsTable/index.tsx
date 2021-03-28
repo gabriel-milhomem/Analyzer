@@ -21,8 +21,15 @@ export function ChartsTable({
   openModal
 }: ChartsTableProps): JSX.Element | null {
   const history = useHistory();
-  const { charts, loading, refresh, setEditChartId } = useCharts();
-  if (refresh === 0) return null;
+  const {
+    charts,
+    loading,
+    refresh,
+    setEditChartId,
+    deleteChart,
+    deleteAllChart
+  } = useCharts();
+  if (refresh === 0 || charts.length === 0) return null;
 
   if (loading) {
     return (
@@ -38,7 +45,7 @@ export function ChartsTable({
         <h2> My Charts </h2>
         <RightBox>
           <h3> {charts.length} itens </h3>
-          <DeleteButton type="button">
+          <DeleteButton type="button" onClick={deleteAllChart}>
             <p> Delete all </p>
             <BsTrash2 />
           </DeleteButton>
@@ -46,37 +53,40 @@ export function ChartsTable({
       </Header>
       <Table>
         <Head>
-          <th> Visualize </th>
-          <th> Title </th>
-          <th> Points </th>
-          <th> Date </th>
-          <th> Edit </th>
-          <th> Delete </th>
+          <tr>
+            <th> Visualize </th>
+            <th> Title </th>
+            <th> Points </th>
+            <th> Date </th>
+            <th> Edit </th>
+            <th> Delete </th>
+          </tr>
         </Head>
         <Body>
           {charts.map(chart => {
             const { id, title, updatedAt, points } = chart;
             const date = new Date(updatedAt);
             return (
-              <tr key={id} onClick={() => history.push(`/chart/${id}`)}>
-                <td>
+              <tr key={id}>
+                <td onClick={() => history.push(`/chart/${id}`)}>
                   <BsEye />
                 </td>
                 <td> {title} </td>
                 <td> {points} </td>
-                <td>{Intl.DateTimeFormat('pt-BR').format(date)}</td>
+                <td>{Intl.DateTimeFormat('en-US').format(date)}</td>
                 <td
-                  onClick={event => {
+                  onClick={async event => {
                     event.stopPropagation();
-                    setEditChartId(id);
+                    await setEditChartId(id);
                     openModal();
                   }}
                 >
                   <BsPencil />
                 </td>
                 <td
-                  onClick={event => {
+                  onClick={async event => {
                     event.stopPropagation();
+                    await deleteChart(id);
                   }}
                 >
                   <BsTrash className="red-svg" />
