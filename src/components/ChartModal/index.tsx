@@ -2,8 +2,8 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import Modal from 'react-modal';
 
 import closeImg from '../../assets/close.svg';
+import { useCharts } from '../../hooks/useCharts';
 import { success } from '../../libs/toast';
-import api from '../../services/api';
 import Utils from '../../utils/Utils';
 import { Title, Input, Error, Form } from './styles';
 import { SubmitButton } from './SubmitButton';
@@ -19,6 +19,7 @@ export function ChartModal({
   isOpen,
   onModalClose
 }: ChartModalProps): JSX.Element {
+  const { createChart } = useCharts();
   const [title, setTitle] = useState('');
   const [error, setError] = useState('');
   const [maximum, setMaximum] = useState(NaN);
@@ -46,7 +47,7 @@ export function ChartModal({
       }
 
       const points = Math.floor(intervalS * frequency);
-      let data: object = {
+      let data = {
         title: Utils.capitalizeAllAndTrim(title),
         maximum,
         minimum,
@@ -56,8 +57,8 @@ export function ChartModal({
       };
 
       data = Utils.sanitizeHtml(data);
-      await api.post('/chart', data);
 
+      createChart(data);
       onModalClose();
       success('Chart successfully created');
       reset();

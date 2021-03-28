@@ -1,11 +1,17 @@
 import { transparentize } from 'polished';
 import styled from 'styled-components';
 
+export const Container = styled.section`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 3rem;
+`;
+
 export const Table = styled.table`
   width: 100%;
 
   border-spacing: 0 0.5rem;
-  padding: 0 1rem;
 
   svg {
     transform: scale(1.5);
@@ -15,6 +21,10 @@ export const Table = styled.table`
 
   .red-svg {
     color: var(--red);
+  }
+
+  tr {
+    border-radius: var(--radius);
   }
 `;
 
@@ -35,21 +45,17 @@ export const Body = styled.tbody`
   td {
     text-align: center;
     padding: 1rem 2rem;
-    border-radius: var(--radius);
     background: var(--shape);
     border: 0;
 
     &:nth-child(2) {
       color: var(--title-color);
     }
-  }
-`;
 
-export const Container = styled.section`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 3rem;
+    &:nth-child(3) {
+      color: var(--green);
+    }
+  }
 `;
 
 export const Header = styled.header`
@@ -57,7 +63,6 @@ export const Header = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1rem;
 
   h2 {
     font-family: var(--font-saira);

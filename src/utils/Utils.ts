@@ -18,7 +18,9 @@ class Utils {
     return result.join(' ');
   }
 
-  sanitizeHtml(data: object): object {
+  sanitizeHtml(data: any): any {
+    if (typeof data === 'object') return;
+
     data = Object.fromEntries(
       Object.entries(data).map(([key, value]) => {
         if (typeof value !== 'string') {

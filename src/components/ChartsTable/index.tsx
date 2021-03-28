@@ -1,10 +1,7 @@
-import { useState, useEffect } from 'react';
 import { BsEye, BsPencil, BsTrash, BsTrash2 } from 'react-icons/bs';
 import Loader from 'react-loader-spinner';
 
-import { useLoading } from '../../hooks/useLoading';
-import { error } from '../../libs/toast';
-import api from '../../services/api';
+import { useCharts } from '../../hooks/useCharts';
 import {
   Table,
   Head,
@@ -19,31 +16,8 @@ interface ChartsTableProps {
   openModal: () => void;
 }
 
-interface Chart {
-  id: number;
-  title: string;
-  points: number;
-  updatedAt: string;
-}
-
 export function ChartsTable({ openModal }: ChartsTableProps): JSX.Element {
-  const [charts, setCharts] = useState<Chart[]>([]);
-  const [loading, setLoading] = useLoading();
-
-  const getCharts = async (): Promise<void> => {
-    try {
-      const { data } = await api.get('/chart');
-      console.log(data);
-      setCharts([...data.charts]);
-    } catch (err) {
-      console.error(err);
-      error(err.response.data.error);
-    }
-  };
-
-  useEffect(() => {
-    setLoading(getCharts());
-  }, []);
+  const { charts, loading } = useCharts();
 
   if (loading) {
     return (
