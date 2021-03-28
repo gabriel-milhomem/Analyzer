@@ -7,12 +7,12 @@ export const Menu = styled.nav`
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
 
+  padding: 0 1rem;
   margin-top: -4.5rem;
 
   ${large} {
     overflow-x: scroll;
     width: 100%;
-    padding: 0 1rem;
 
     &::-webkit-scrollbar {
       width: 0px;

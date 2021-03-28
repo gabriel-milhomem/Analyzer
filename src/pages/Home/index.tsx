@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Card } from '../../components/Card';
 import { ChartModal } from '../../components/ChartModal';
+import { ChartsTable } from '../../components/ChartsTable';
 import { StyledHome, Menu } from './styles';
 
 export function Home(): JSX.Element {
@@ -34,6 +35,8 @@ export function Home(): JSX.Element {
           backColor="var(--green)"
         />
       </Menu>
+
+      <ChartsTable openModal={handleOpenChartModal} />
     </StyledHome>
   );
 }

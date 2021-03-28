@@ -19,7 +19,7 @@ export function ChartModal({
   isOpen,
   onModalClose
 }: ChartModalProps): JSX.Element {
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   const [error, setError] = useState('');
   const [maximum, setMaximum] = useState(NaN);
   const [minimum, setMinimum] = useState(NaN);
@@ -47,7 +47,7 @@ export function ChartModal({
 
       const points = Math.floor(intervalS * frequency);
       let data: object = {
-        name: Utils.capitalizeAllAndTrim(name),
+        title: Utils.capitalizeAllAndTrim(title),
         maximum,
         minimum,
         frequency,
@@ -90,7 +90,7 @@ export function ChartModal({
   };
 
   const reset = (): void => {
-    setName('');
+    setTitle('');
     setMaximum(NaN);
     setMinimum(NaN);
     setFrequency(NaN);
@@ -117,10 +117,10 @@ export function ChartModal({
       <Form onSubmit={handleOnNewChart}>
         <Input
           type="text"
-          value={name}
-          onChange={event => setName(event.target.value)}
+          value={title}
+          onChange={event => setTitle(event.target.value)}
           autoFocus
-          placeholder="Name"
+          placeholder="Title"
           pattern="^[\w ]*$"
           title="Must be only alphanumerics"
           width="100%"

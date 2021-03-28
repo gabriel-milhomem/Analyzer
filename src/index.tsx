@@ -7,6 +7,13 @@ import { App } from './App';
 
 const root = document.getElementById('root');
 
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  root
+);
+
 createServer({
   models: {
     chart: Model
@@ -25,12 +32,32 @@ createServer({
 
       return schema.create('chart', data);
     });
+  },
+
+  seeds(server) {
+    server.db.loadData({
+      charts: [
+        {
+          id: 1,
+          title: 'Hello World',
+          points: 10,
+          intervalS: 5,
+          frequency: 2,
+          maximum: 100,
+          minimum: 0,
+          updatedAt: new Date()
+        },
+        {
+          id: 2,
+          title: 'Work',
+          points: 40,
+          intervalS: 10,
+          frequency: 4,
+          maximum: 50,
+          minimum: -50,
+          updatedAt: new Date('2021-02-12 09:00:00')
+        }
+      ]
+    });
   }
 });
-
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  root
-);
