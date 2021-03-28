@@ -1,6 +1,6 @@
 import { stripHtml } from 'string-strip-html';
 
-interface validationProps {
+interface ValidationProps {
   maximum: number;
   minimum: number;
   frequency: number;
@@ -19,7 +19,7 @@ class Utils {
   }
 
   sanitizeHtml(data: any): any {
-    if (typeof data === 'object') return;
+    if (typeof data !== 'object') return;
 
     data = Object.fromEntries(
       Object.entries(data).map(([key, value]) => {
@@ -34,27 +34,18 @@ class Utils {
     return data;
   }
 
-  hasNumberValidationError(props: validationProps): string {
+  hasNumberValidationError(props: ValidationProps): string {
     const { maximum, minimum, frequency, intervalS } = props;
-    const arrayInput = [maximum, minimum, frequency, intervalS];
-    const dispatcherError = [
-      {
-        test: maximum <= minimum,
-        message: 'Maximum must be greater then minimum'
-      },
-      {
-        test: arrayInput.some(value => value.toString().indexOf('.') !== -1),
-        message: 'All number fields must be integer'
-      }
-    ];
-
-    const hasError = dispatcherError.find(input => input.test);
-
-    if (hasError) {
-      return hasError.message;
+    let message: string = '';
+    if (maximum <= minimum) {
+      message = 'Maximum must be greater then minimum';
     }
 
-    return '';
+    if (Math.round(frequency * intervalS) === 0) {
+      message = 'At least one point in the chart';
+    }
+
+    return message;
   }
 }
 

@@ -16,8 +16,11 @@ interface ChartsTableProps {
   openModal: () => void;
 }
 
-export function ChartsTable({ openModal }: ChartsTableProps): JSX.Element {
-  const { charts, loading } = useCharts();
+export function ChartsTable({
+  openModal
+}: ChartsTableProps): JSX.Element | null {
+  const { charts, loading, refresh } = useCharts();
+  if (refresh === 0) return null;
 
   if (loading) {
     return (

@@ -14,17 +14,18 @@ const defaultOptions: ToastOptions = {
 };
 
 const Toast = styled(ToastContainer)`
+  color: #fff !important;
+  font-weight: 500 !important;
+  font-size: 1.1.rem !important;
+
   .Toastify__toast--success {
     background: var(--green);
-    color: #fff;
-    font-weight: 500;
-    font-size: 1.1.rem;
   }
   .Toastify__toast--error {
     background: var(--red);
-    color: #fff;
-    font-weight: 500;
-    font-size: 1.1.rem;
+  }
+  .Toastify__toast--warning {
+    background: var(--yellow);
   }
 `;
 
@@ -38,4 +39,8 @@ export function success(message: string): ReactText {
 
 export function error(message: string): ReactText {
   return toast.error(message, defaultOptions);
+}
+
+export function warning(message: string): ReactText {
+  return toast.warning(message, defaultOptions);
 }

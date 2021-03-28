@@ -46,7 +46,7 @@ export function ChartModal({
         return;
       }
 
-      const points = Math.floor(intervalS * frequency);
+      const points = Math.round(intervalS * frequency);
       let data = {
         title: Utils.capitalizeAllAndTrim(title),
         maximum,
@@ -57,8 +57,8 @@ export function ChartModal({
       };
 
       data = Utils.sanitizeHtml(data);
-
       createChart(data);
+
       onModalClose();
       success('Chart successfully created');
       reset();
@@ -151,8 +151,7 @@ export function ChartModal({
           onChange={event => handleOnChangeNumber(event, 'frequency')}
           placeholder="Frequency"
           width="48%"
-          min="1"
-          step="1"
+          min="0"
           required
         />
         <Input

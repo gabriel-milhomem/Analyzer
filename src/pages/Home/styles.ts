@@ -24,4 +24,5 @@ export const StyledHome = styled.main`
   max-width: 1120px;
 
   padding: 0 1rem;
+  padding-bottom: 4rem;
 `;
