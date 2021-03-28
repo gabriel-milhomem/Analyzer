@@ -69,15 +69,14 @@ const Button = styled.button<ButtonProps>`
     `}
 
   span {
+    display: block;
     position: relative;
     transition: 0.4s linear;
 
     &::after {
-      content: '»';
+      content: '➞';
       position: absolute;
-      font-size: 2.8rem;
       opacity: 0;
-      top: -19px;
       right: -40px;
       transition: 0.2s linear;
     }
