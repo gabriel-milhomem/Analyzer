@@ -6,7 +6,7 @@ export default new Server({
   },
 
   routes() {
-    this.timing = 400;
+    this.timing = 500;
     this.namespace = 'api';
 
     this.get('/chart', schema => {

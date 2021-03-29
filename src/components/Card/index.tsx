@@ -37,7 +37,7 @@ export function Card(props: CardProps): JSX.Element {
       return;
     }
 
-    history.push(`/chart/${charts[0].id}`);
+    history.push(`/dashboard/${charts[0]?.id}`);
   }
 
   return (

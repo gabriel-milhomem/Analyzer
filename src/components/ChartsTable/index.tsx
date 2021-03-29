@@ -29,7 +29,7 @@ export function ChartsTable({
     deleteChart,
     deleteAllChart
   } = useCharts();
-  if (refresh === 0 || charts.length === 0) return null;
+  if (!refresh || !charts.length) return null;
 
   if (loading) {
     return (
@@ -68,7 +68,7 @@ export function ChartsTable({
             const date = new Date(updatedAt);
             return (
               <tr key={id}>
-                <td onClick={() => history.push(`/chart/${id}`)}>
+                <td onClick={() => history.push(`/dashboard/${id}`)}>
                   <BsEye />
                 </td>
                 <td> {title} </td>

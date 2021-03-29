@@ -86,6 +86,9 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
       const auxCharts = charts.filter(chart => chart.id !== id);
       success('Chart successfully deleted');
       setCharts([...auxCharts]);
+      if (auxCharts.length === 0) {
+        localStorage.removeItem('charts');
+      }
     } catch (err) {
       console.error(err);
       error(err.response.data.error);
@@ -98,6 +101,7 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
 
       success('All charts have been deleted');
       setCharts([]);
+      localStorage.removeItem('charts');
     } catch (err) {
       console.error(err);
       error(err.response.data.error);

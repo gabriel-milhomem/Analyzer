@@ -33,14 +33,14 @@ export default function ToastProvider(): JSX.Element {
   return <Toast />;
 }
 
-export function success(message: string): ReactText {
-  return toast.success(message, defaultOptions);
+export function success(message: string, options = {}): ReactText {
+  return toast.success(message, { ...defaultOptions, ...options });
 }
 
-export function error(message: string): ReactText {
-  return toast.error(message, defaultOptions);
+export function error(message: string, options = {}): ReactText {
+  return toast.error(message, { ...defaultOptions, ...options });
 }
 
-export function warning(message: string): ReactText {
-  return toast.warning(message, defaultOptions);
+export function warning(message: string, options = {}): ReactText {
+  return toast.warning(message, { ...defaultOptions, ...options });
 }
