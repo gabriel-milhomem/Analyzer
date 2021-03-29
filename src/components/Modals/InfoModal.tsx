@@ -14,7 +14,7 @@ export function InfoModal(props: InfoModalProps): JSX.Element {
     <Modal
       className="react-modal-content"
       overlayClassName="react-modal-overlay"
-      isOpen={true}
+      isOpen={props.isOpen}
       onRequestClose={props.onModalClose}
     >
       <InfoSection>

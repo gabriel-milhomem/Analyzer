@@ -1,4 +1,10 @@
-import { IoBarChartOutline, IoEyeOutline } from 'react-icons/io5';
+import {
+  IoBarChartOutline,
+  IoEyeOutline,
+  IoReaderOutline,
+  IoPieChartOutline,
+  IoListOutline
+} from 'react-icons/io5';
 import { useHistory } from 'react-router-dom';
 
 import { useCharts } from '../../hooks/useCharts';
@@ -8,6 +14,9 @@ interface Dispatcher {
   show: JSX.Element;
   info: null;
   create: JSX.Element;
+  outputs: JSX.Element;
+  graphic: JSX.Element;
+  table: JSX.Element;
 }
 
 interface CardProps {
@@ -22,12 +31,16 @@ interface CardProps {
 export function Card(props: CardProps): JSX.Element {
   const { setEditChartId, charts } = useCharts();
   const { title, subtitle, cardType, backColor } = props;
+
   const date = new Date(charts[0]?.updatedAt);
   const history = useHistory();
   const iconDispatcher: Dispatcher = {
     show: <IoEyeOutline />,
     info: null,
-    create: <IoBarChartOutline />
+    create: <IoBarChartOutline />,
+    outputs: <IoReaderOutline />,
+    graphic: <IoPieChartOutline />,
+    table: <IoListOutline />
   };
 
   const icon = iconDispatcher[cardType];

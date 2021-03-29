@@ -11,12 +11,14 @@ interface TextProps {
   cardType: string;
 }
 
+const colorWhite = ['show', 'graphic', 'table'];
+
 export const StyledCard = styled.button<StyledCardProps>`
   background: ${props => props.backColor};
   padding: 1.5rem;
   padding-bottom: 0.5rem !important;
   color: ${props =>
-    props.cardType === 'show' ? '#fff' : 'var(--title-color)'};
+    colorWhite.includes(props.cardType) ? '#fff' : 'var(--title-color)'};
 
   border-radius: var(--radius);
   transition: filter 0.2s;
@@ -87,7 +89,7 @@ export const TopLine = styled.header`
   }
 
   svg {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
 `;
 
