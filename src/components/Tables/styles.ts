@@ -10,6 +10,22 @@ export const Container = styled.section`
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 3rem;
+  padding-right: 0.5rem;
+  max-height: 440px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: ${transparentize(0.6, '#33cc95')};
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    display: none;
+  }
 `;
 
 export const Table = styled.table`

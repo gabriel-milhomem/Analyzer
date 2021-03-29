@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Card } from '../../components/Card';
-import { ChartModal } from '../../components/ChartModal';
+import { ChartModal } from '../../components/Modals';
 import { ChartsTable } from '../../components/Tables';
 import { StyledHome, Menu } from './styles';
 

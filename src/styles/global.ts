@@ -97,7 +97,7 @@ export default css`
 
   .react-modal-content {
     width: 100%;
-    max-width: 480px;
+    max-width: 500px;
 
     background: #f0f1f5;
     position: relative;
