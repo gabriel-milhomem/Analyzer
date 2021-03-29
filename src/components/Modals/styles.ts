@@ -60,17 +60,19 @@ export const Form = styled.form`
 export const InfoTitle = styled.h1`
   color: var(--title-color);
   font-size: 1.5rem;
-  line-height: 2rem;
   text-align: left;
   margin: 0.5rem 0;
 `;
 
-export const Subtitle = styled(Title).attrs({ as: 'h2' })`
-  font-size: 1.25;
+export const Subtitle = styled(InfoTitle).attrs({ as: 'h2' })`
+  font-size: 1.25rem;
+  margin-top: 0.1rem;
+  font-weight: 500;
 `;
 
 export const InfoSection = styled.section`
-  max-height: 440px;
+  max-height: 400px;
+  padding-right: 0.8rem;
   overflow-y: scroll;
 
   &::-webkit-scrollbar {
@@ -79,7 +81,7 @@ export const InfoSection = styled.section`
 
   &::-webkit-scrollbar-thumb {
     border-radius: 6px;
-    background: ${transparentize(0.6, '#33cc95')};
+    background: ${transparentize(0.4, '#33cc95')};
   }
 
   &::-webkit-scrollbar-track-piece {

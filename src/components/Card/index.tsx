@@ -46,13 +46,22 @@ export function Card(props: CardProps): JSX.Element {
   const icon = iconDispatcher[cardType];
 
   function handleClickCard(): void {
-    if (cardType === 'create') {
-      setEditChartId('');
-      props.openModal!();
-      return;
+    switch (cardType) {
+      case 'create':
+        setEditChartId('');
+        props.openModal!();
+        break;
+      case 'graphic':
+        break;
+      case 'table':
+        break;
+      case 'outputs':
+        props.openModal!();
+        break;
+      default:
+        history.push(`/dashboard/${charts[0]?.id}`);
+        break;
     }
-
-    history.push(`/dashboard/${charts[0]?.id}`);
   }
 
   return (

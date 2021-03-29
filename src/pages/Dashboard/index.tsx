@@ -18,15 +18,15 @@ export function Dashboard(): JSX.Element {
           subtitle="in graphic"
           cardType="graphic"
           backColor="var(--green)"
-          openModal={handleOpenInfoModal}
         />
-        <InfoModal isOpen={infoModal} onModalClose={handleCloseInfoModal} />
         <Card
           title="Analyze"
           subtitle="the outputs"
           cardType="outputs"
           backColor="var(--shape)"
+          openModal={handleOpenInfoModal}
         />
+        <InfoModal isOpen={infoModal} onModalClose={handleCloseInfoModal} />
         <Card
           title="View"
           subtitle="in table"
