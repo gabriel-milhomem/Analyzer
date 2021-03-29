@@ -16,7 +16,7 @@ interface AppProviderProps {
 }
 
 interface Charts {
-  id: number;
+  id: string;
   title: string;
   maximum: number;
   minimum: number;
@@ -31,20 +31,20 @@ type ChartInput = Omit<Charts, 'id' | 'updatedAt'>;
 interface ChartContextData {
   charts: Charts[];
   createChart: (chart: ChartInput) => Promise<void>;
-  updateChart: (chart: ChartInput, id: number) => Promise<void>;
-  deleteChart: (id: number) => Promise<void>;
+  updateChart: (chart: ChartInput, id: string) => Promise<void>;
+  deleteChart: (id: string) => Promise<void>;
   deleteAllChart: () => Promise<void>;
   loading: boolean;
   setRefresh: (number: number) => void;
   refresh: number;
-  editChartId: number;
-  setEditChartId: (number: number) => void;
+  editChartId: string;
+  setEditChartId: (number: string) => void;
 }
 
 const ChartContext = createContext<ChartContextData>({} as ChartContextData);
 
 function ChartProvider({ children }: AppProviderProps): JSX.Element {
-  const [editChartId, setEditChartId] = useState(0);
+  const [editChartId, setEditChartId] = useState('');
   const [refresh, setRefresh] = useState(0);
   const [charts, setCharts] = useLocalStorage<Charts[]>('charts', []);
 
@@ -54,8 +54,11 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
     async function getCharts(): Promise<void> {
       try {
         const { data } = await api.get('/chart');
-        setCharts([...data].reverse());
-        if (data.length === 0) {
+        if (refresh > 1) {
+          setCharts([...data].reverse());
+        }
+
+        if (!charts.length && refresh > 0) {
           warning("It's empty, create a new chart");
         }
       } catch (err) {
@@ -73,20 +76,21 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
     setCharts([response.data, ...charts]);
   }
 
-  async function updateChart(chart: ChartInput, id: number): Promise<void> {
+  async function updateChart(chart: ChartInput, id: string): Promise<void> {
     const response = await api.put(`/chart/${id}`, chart);
     const auxCharts = charts.filter(chart => chart.id !== id);
     setCharts([response.data, ...auxCharts]);
   }
 
-  async function deleteChart(id: number): Promise<void> {
+  async function deleteChart(id: string): Promise<void> {
     try {
       await api.delete(`/chart/${id}`);
+      const customId = 'custom-id-delete';
 
       const auxCharts = charts.filter(chart => chart.id !== id);
-      success('Chart successfully deleted');
+      success('Chart successfully deleted', { toastId: customId });
       setCharts([...auxCharts]);
-      if (auxCharts.length === 0) {
+      if (!auxCharts.length) {
         localStorage.removeItem('charts');
       }
     } catch (err) {
@@ -98,8 +102,9 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
   async function deleteAllChart(): Promise<void> {
     try {
       await api.delete('/chart');
+      const customId = 'custom-id-allDelete';
 
-      success('All charts have been deleted');
+      success('All charts have been deleted', { toastId: customId });
       setCharts([]);
       localStorage.removeItem('charts');
     } catch (err) {

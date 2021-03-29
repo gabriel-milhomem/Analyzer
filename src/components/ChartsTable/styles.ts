@@ -1,6 +1,10 @@
 import { transparentize, darken } from 'polished';
 import styled from 'styled-components';
 
+interface BodyProps {
+  disabled: boolean;
+}
+
 export const Container = styled.section`
   display: flex;
   justify-content: center;
@@ -41,8 +45,9 @@ export const Head = styled.thead`
   }
 `;
 
-export const Body = styled.tbody`
+export const Body = styled.tbody<BodyProps>`
   td {
+    pointer-events: ${props => (props.disabled ? 'none' : 'initial')};
     text-align: center;
     padding: 1rem 2rem;
     background: var(--shape);

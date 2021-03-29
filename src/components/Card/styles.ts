@@ -13,7 +13,8 @@ interface TextProps {
 
 export const StyledCard = styled.button<StyledCardProps>`
   background: ${props => props.backColor};
-  padding: 1.5rem 1.75rem;
+  padding: 1.5rem;
+  padding-bottom: 0.5rem !important;
   color: ${props =>
     props.cardType === 'show' ? '#fff' : 'var(--title-color)'};
 
@@ -87,5 +88,15 @@ export const TopLine = styled.header`
 
   svg {
     font-size: 1.75rem;
+  }
+`;
+
+export const Footer = styled.div`
+  height: 0.9rem;
+
+  p {
+    font-size: 0.9rem;
+    text-align: left;
+    color: var(--text-body);
   }
 `;

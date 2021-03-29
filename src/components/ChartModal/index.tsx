@@ -28,8 +28,8 @@ export function ChartModal({
   const [intervalS, setIntervalS] = useState(NaN);
   const [disabled, setDisabled] = useState(false);
 
-  const headline = editChartId === 0 ? 'Create a new chart' : 'Edit your chart';
-  const successMsg = editChartId === 0 ? 'created' : 'edited';
+  const headline = !editChartId ? 'Create a new chart' : 'Edit your chart';
+  const successMsg = !editChartId ? 'created' : 'edited';
 
   useEffect(() => {
     if (editChartId) {
@@ -99,7 +99,7 @@ export function ChartModal({
       intervalS: setIntervalS
     };
 
-    const integerValue = value === '' ? NaN : Number(value);
+    const integerValue = !value ? NaN : Number(value);
 
     onChangeDispatcher[type](integerValue);
   };

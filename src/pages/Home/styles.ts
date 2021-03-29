@@ -7,7 +7,7 @@ export const Menu = styled.nav`
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
 
-  margin-top: -4.5rem;
+  margin-top: -4.4rem;
 
   ${large} {
     overflow-x: scroll;

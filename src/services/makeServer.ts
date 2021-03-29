@@ -1,4 +1,5 @@
 import { Server, Model, Response } from 'miragejs';
+import shortid from 'shortid';
 
 export default new Server({
   models: {
@@ -6,7 +7,7 @@ export default new Server({
   },
 
   routes() {
-    this.timing = 500;
+    this.timing = 600;
     this.namespace = 'api';
 
     this.get('/chart', schema => {
@@ -14,10 +15,12 @@ export default new Server({
     });
 
     this.post('/chart', (schema, request) => {
-      const body = JSON.parse(request.requestBody);
+      let body = JSON.parse(request.requestBody);
 
       body.updatedAt = new Date();
-      return schema.db.charts.insert(body);
+      body = schema.db.charts.insert(body);
+      body.id = shortid.generate();
+      return body;
     });
 
     this.put('/chart/:id', (schema, request) => {
@@ -41,13 +44,13 @@ export default new Server({
 
       return new Response(204);
     });
-  },
+  }
 
-  seeds(server) {
+  /* seeds(server) {
     server.db.loadData({
       charts: [
         {
-          id: 1,
+          id: shortid.generate(),
           title: 'Hello World',
           points: 10,
           intervalS: 5,
@@ -57,7 +60,7 @@ export default new Server({
           updatedAt: new Date()
         },
         {
-          id: 2,
+          id: shortid.generate(),
           title: 'Work',
           points: 40,
           intervalS: 10,
@@ -68,5 +71,5 @@ export default new Server({
         }
       ]
     });
-  }
+  } */
 });

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BsEye, BsPencil, BsTrash, BsTrash2 } from 'react-icons/bs';
 import Loader from 'react-loader-spinner';
 import { useHistory } from 'react-router-dom';
@@ -20,6 +21,9 @@ interface ChartsTableProps {
 export function ChartsTable({
   openModal
 }: ChartsTableProps): JSX.Element | null {
+  const [disabledAllDelete, setDisabledAllDelete] = useState(false);
+  const [disabledDelete, setDisabledDelete] = useState(false);
+
   const history = useHistory();
   const {
     charts,
@@ -45,7 +49,15 @@ export function ChartsTable({
         <h2> My Charts </h2>
         <RightBox>
           <h3> {charts.length} itens </h3>
-          <DeleteButton type="button" onClick={deleteAllChart}>
+          <DeleteButton
+            disabled={disabledAllDelete}
+            type="button"
+            onClick={async () => {
+              setDisabledAllDelete(true);
+              await deleteAllChart();
+              setDisabledAllDelete(false);
+            }}
+          >
             <p> Delete all </p>
             <BsTrash2 />
           </DeleteButton>
@@ -62,7 +74,7 @@ export function ChartsTable({
             <th> Delete </th>
           </tr>
         </Head>
-        <Body>
+        <Body disabled={disabledDelete}>
           {charts.map(chart => {
             const { id, title, updatedAt, points } = chart;
             const date = new Date(updatedAt);
@@ -73,7 +85,7 @@ export function ChartsTable({
                 </td>
                 <td> {title} </td>
                 <td> {points} </td>
-                <td>{Intl.DateTimeFormat('en-US').format(date)}</td>
+                <td>{new Intl.DateTimeFormat('en-US').format(date)}</td>
                 <td
                   onClick={async event => {
                     event.stopPropagation();
@@ -86,7 +98,9 @@ export function ChartsTable({
                 <td
                   onClick={async event => {
                     event.stopPropagation();
+                    setDisabledDelete(true);
                     await deleteChart(id);
+                    setDisabledDelete(false);
                   }}
                 >
                   <BsTrash className="red-svg" />

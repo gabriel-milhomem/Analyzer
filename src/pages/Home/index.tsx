@@ -17,6 +17,7 @@ export function Home(): JSX.Element {
         <Card
           title="Create"
           subtitle="New chart"
+          footerText
           cardType="create"
           backColor="var(--shape)"
           openModal={handleOpenChartModal}
