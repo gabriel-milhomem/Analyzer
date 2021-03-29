@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Card } from '../../components/Card';
 import { ChartModal } from '../../components/ChartModal';
-import { ChartsTable } from '../../components/ChartsTable';
+import { ChartsTable } from '../../components/Tables';
 import { StyledHome, Menu } from './styles';
 
 export function Home(): JSX.Element {

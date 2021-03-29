@@ -22,7 +22,7 @@ interface Charts {
   minimum: number;
   frequency: number;
   intervalS: number;
-  points: number;
+  entity: string;
   updatedAt: string;
 }
 

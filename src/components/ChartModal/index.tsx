@@ -21,6 +21,7 @@ export function ChartModal({
 }: ChartModalProps): JSX.Element {
   const { createChart, charts, editChartId, updateChart } = useCharts();
   const [title, setTitle] = useState('');
+  const [entity, setEntity] = useState('');
   const [error, setError] = useState('');
   const [maximum, setMaximum] = useState(NaN);
   const [minimum, setMinimum] = useState(NaN);
@@ -34,8 +35,9 @@ export function ChartModal({
   useEffect(() => {
     if (editChartId) {
       const chart = charts.find(chart => chart.id === editChartId)!;
-      const { title, maximum, minimum, frequency, intervalS } = chart;
+      const { title, maximum, minimum, frequency, intervalS, entity } = chart;
       setTitle(title);
+      setEntity(entity);
       setMaximum(maximum);
       setMinimum(minimum);
       setFrequency(frequency);
@@ -61,14 +63,13 @@ export function ChartModal({
         return;
       }
 
-      const points = Math.round(intervalS * frequency);
       let data = {
         title: Utils.capitalizeAllAndTrim(title),
+        entity: Utils.capitalizeAllAndTrim(entity),
         maximum,
         minimum,
         frequency,
-        intervalS,
-        points
+        intervalS
       };
 
       data = Utils.sanitizeHtml(data);
@@ -116,6 +117,7 @@ export function ChartModal({
     setIntervalS(NaN);
     setDisabled(false);
     setError('');
+    setEntity('');
   };
 
   return (
@@ -146,6 +148,16 @@ export function ChartModal({
           required
         />
         <Input
+          type="text"
+          value={entity}
+          onChange={event => setEntity(event.target.value)}
+          placeholder="Entity name (y-axis)"
+          pattern="^[A-z\u00C0-\u00ff ]+$"
+          title="Must be only letters"
+          width="100%"
+          required
+        />
+        <Input
           type="number"
           value={handleValue(maximum)}
           onChange={event => handleOnChangeNumber(event, 'maximum')}
@@ -170,6 +182,7 @@ export function ChartModal({
           placeholder="Frequency"
           width="48%"
           min="0"
+          step="0.1"
           required
         />
         <Input

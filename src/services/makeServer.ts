@@ -7,7 +7,7 @@ export default new Server({
   },
 
   routes() {
-    this.timing = 600;
+    this.timing = 500;
     this.namespace = 'api';
 
     this.get('/chart', schema => {
@@ -52,7 +52,7 @@ export default new Server({
         {
           id: shortid.generate(),
           title: 'Hello World',
-          points: 10,
+          entity: 'Space',
           intervalS: 5,
           frequency: 2,
           maximum: 100,
@@ -62,7 +62,7 @@ export default new Server({
         {
           id: shortid.generate(),
           title: 'Work',
-          points: 40,
+          entity: 'push-up',
           intervalS: 10,
           frequency: 4,
           maximum: 50,

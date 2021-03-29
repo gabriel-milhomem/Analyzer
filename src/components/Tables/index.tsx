@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { BsEye, BsPencil, BsTrash, BsTrash2 } from 'react-icons/bs';
+import { BsTrash2 } from 'react-icons/bs';
 import Loader from 'react-loader-spinner';
-import { useHistory } from 'react-router-dom';
 
 import { useCharts } from '../../hooks/useCharts';
+import { ChartTableRow } from './ChartTableRow';
 import {
   Table,
   Head,
@@ -24,15 +24,7 @@ export function ChartsTable({
   const [disabledAllDelete, setDisabledAllDelete] = useState(false);
   const [disabledDelete, setDisabledDelete] = useState(false);
 
-  const history = useHistory();
-  const {
-    charts,
-    loading,
-    refresh,
-    setEditChartId,
-    deleteChart,
-    deleteAllChart
-  } = useCharts();
+  const { charts, loading, refresh, deleteAllChart } = useCharts();
   if (!refresh || !charts.length) return null;
 
   if (loading) {
@@ -68,46 +60,21 @@ export function ChartsTable({
           <tr>
             <th> Visualize </th>
             <th> Title </th>
-            <th> Points </th>
+            <th> Entity </th>
             <th> Date </th>
             <th> Edit </th>
             <th> Delete </th>
           </tr>
         </Head>
         <Body disabled={disabledDelete}>
-          {charts.map(chart => {
-            const { id, title, updatedAt, points } = chart;
-            const date = new Date(updatedAt);
-            return (
-              <tr key={id}>
-                <td onClick={() => history.push(`/dashboard/${id}`)}>
-                  <BsEye />
-                </td>
-                <td> {title} </td>
-                <td> {points} </td>
-                <td>{new Intl.DateTimeFormat('en-US').format(date)}</td>
-                <td
-                  onClick={async event => {
-                    event.stopPropagation();
-                    await setEditChartId(id);
-                    openModal();
-                  }}
-                >
-                  <BsPencil />
-                </td>
-                <td
-                  onClick={async event => {
-                    event.stopPropagation();
-                    setDisabledDelete(true);
-                    await deleteChart(id);
-                    setDisabledDelete(false);
-                  }}
-                >
-                  <BsTrash className="red-svg" />
-                </td>
-              </tr>
-            );
-          })}
+          {charts.map(chart => (
+            <ChartTableRow
+              key={chart.id}
+              chart={chart}
+              setDisabledDelete={setDisabledDelete}
+              openModal={openModal}
+            />
+          ))}
         </Body>
       </Table>
     </Container>
