@@ -10,6 +10,7 @@
     "format": "prettier \"**/*.+(js|jsx|ts|tsx)\" --write"
   },
   "dependencies": {
+    "@types/sanitize-html": "^1.27.1",
     "axios": "^0.21.1",
     "express": "^4.17.1",
     "miragejs": "^0.1.41",
@@ -22,8 +23,8 @@
     "react-modal": "^3.12.1",
     "react-router-dom": "^5.2.0",
     "react-toastify": "^7.0.3",
+    "sanitize-html": "^2.3.3",
     "shortid": "^2.2.16",
-    "string-strip-html": "^8.2.7",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {

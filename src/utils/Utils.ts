@@ -1,4 +1,4 @@
-import { stripHtml } from 'string-strip-html';
+import sanitizer from 'sanitize-html';
 
 interface ValidationProps {
   maximum: number;
@@ -27,7 +27,7 @@ class Utils {
           return [key, value];
         }
 
-        return [key, stripHtml(value).result];
+        return [key, sanitizer(value)];
       })
     );
 
@@ -36,7 +36,7 @@ class Utils {
 
   hasNumberValidationError(props: ValidationProps): string {
     const { maximum, minimum, frequency, intervalS } = props;
-    let message: string = '';
+    let message = '';
     if (maximum <= minimum) {
       message = 'Maximum must be greater then minimum';
     }
