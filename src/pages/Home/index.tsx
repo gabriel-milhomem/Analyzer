@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import { Card } from '../../components/Card';
-import { ChartModal } from '../../components/Modals';
-import { ChartsTable } from '../../components/Tables';
+import { ChartModal } from '../../components/Modals/ChartModal';
+import { ChartsTable } from '../../components/Tables/ChartsTable';
 import { StyledHome, Menu } from './styles';
 
 export function Home(): JSX.Element {

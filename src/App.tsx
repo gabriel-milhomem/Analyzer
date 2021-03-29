@@ -7,7 +7,7 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { Header } from './components/Header';
 import ChartProvider, { useCharts } from './hooks/useCharts';
 import { usePageTracking } from './hooks/usePageTracking';
-import ToastProvider, { warning } from './libs/toast';
+import ToastProvider, { error } from './libs/toast';
 import { Dashboard } from './pages/Dashboard';
 import { Home } from './pages/Home';
 import GlobalStyle from './styles';
@@ -38,7 +38,7 @@ function ProtectedRoute(props: RouteProps): JSX.Element {
   const customId = 'custom-id-warning';
 
   if (!charts || !charts.length) {
-    warning('Selected chart does not exist', { toastId: customId });
+    error('Selected chart does not exist', { toastId: customId });
     return <Redirect to="/" />;
   }
   return <Route {...props} />;

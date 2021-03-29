@@ -1,31 +1,18 @@
 import { transparentize, darken } from 'polished';
 import styled from 'styled-components';
 
+import { InfoSection } from '../Modals/styles';
+
 interface BodyProps {
   disabled: boolean;
 }
 
-export const Container = styled.section`
+export const Container = styled(InfoSection)`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 3rem;
   padding-right: 0.5rem;
-  max-height: 440px;
-  overflow-y: scroll;
-
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 6px;
-    background: ${transparentize(0.6, '#33cc95')};
-  }
-
-  &::-webkit-scrollbar-track-piece {
-    display: none;
-  }
 `;
 
 export const Table = styled.table`
@@ -71,10 +58,6 @@ export const Body = styled.tbody<BodyProps>`
 
     &:nth-child(2) {
       color: var(--title-color);
-    }
-
-    &:nth-child(3) {
-      color: var(--green);
     }
 
     &:nth-child(1),
