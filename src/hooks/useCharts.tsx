@@ -6,7 +6,7 @@ import {
   useState
 } from 'react';
 
-import { warning, error, success } from '../libs/toast';
+import { warning, error } from '../libs/toast';
 import api from '../services/api';
 import { useLoading } from './useLoading';
 import { useLocalStorage } from './useLocalStorage';
@@ -55,7 +55,7 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
       try {
         const { data } = await api.get('/chart');
         if (refresh > 1) {
-          setCharts([...data].reverse());
+          setCharts([...data.reverse()]);
         }
 
         if (!charts.length && refresh > 0) {
@@ -63,7 +63,7 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
         }
       } catch (err) {
         console.error(err);
-        error(err.response.data.error);
+        error('Internal server error');
       }
     }
 
@@ -79,37 +79,34 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
   async function updateChart(chart: ChartInput, id: string): Promise<void> {
     const response = await api.put(`/chart/${id}`, chart);
     const auxCharts = charts.filter(chart => chart.id !== id);
+
     setCharts([response.data, ...auxCharts]);
   }
 
   async function deleteChart(id: string): Promise<void> {
     try {
       await api.delete(`/chart/${id}`);
-      const customId = 'custom-id-delete';
 
       const auxCharts = charts.filter(chart => chart.id !== id);
-      success('Chart successfully deleted', { toastId: customId });
       setCharts([...auxCharts]);
       if (!auxCharts.length) {
         localStorage.removeItem('charts');
       }
     } catch (err) {
       console.error(err);
-      error(err.response.data.error);
+      error('Internal server error');
     }
   }
 
   async function deleteAllChart(): Promise<void> {
     try {
       await api.delete('/chart');
-      const customId = 'custom-id-allDelete';
 
-      success('All charts have been deleted', { toastId: customId });
       setCharts([]);
       localStorage.removeItem('charts');
     } catch (err) {
       console.error(err);
-      error(err.response.data.error);
+      error('Internal server error');
     }
   }
 

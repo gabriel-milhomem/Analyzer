@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Loader from 'react-loader-spinner';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import { Card } from '../../components/Card';
 import { InfoModal } from '../../components/Modals';
-import { useLoading, useLocalStorage } from '../../hooks';
+import { useLoading } from '../../hooks';
 import { Chart } from '../../hooks/useCharts';
 import { error } from '../../libs/toast';
 import api from '../../services/api';
@@ -19,8 +19,9 @@ export function Dashboard(): JSX.Element {
   const [infoModal, setInfoModal] = useState(false);
   // const [listXTime, setListXTime] = useState<number[]>([]);
   const [listYNumber, setListYNumber] = useState<number[]>([]);
-  const [chart, setChart] = useLocalStorage<Chart>('chart', {} as Chart);
+  const [chart, setChart] = useState<Chart>({} as Chart);
   const [loading, setLoading] = useLoading();
+  const history = useHistory();
 
   const handleOpenInfoModal = (): void => setInfoModal(true);
   const handleCloseInfoModal = (): void => setInfoModal(false);
@@ -31,19 +32,23 @@ export function Dashboard(): JSX.Element {
       try {
         const { data } = await api.get(`/chart/${id}`);
 
-        setChart(data);
+        if (data) {
+          const { maximum, minimum, frequency, intervalS } = data;
+          setChart(data);
+          setListYNumber(
+            Utils.generateRandomList({ maximum, minimum, frequency, intervalS })
+          );
+          // setListXTime(Utils.generateTimestamp(frequency, intervalS));
+        } else {
+          history.push('/');
+          error('Selected chart does not exist');
+        }
       } catch (err) {
         console.error(err);
-        error(err.response.data.error);
+        error('Internal server error');
       }
     }
     setLoading(getChartById(id));
-
-    const { maximum, minimum, frequency, intervalS } = chart;
-    setListYNumber(
-      Utils.generateRandomList({ maximum, minimum, frequency, intervalS })
-    );
-    // setListXTime(Utils.generateTimestamp(frequency, intervalS));
   }, [id]);
 
   return (
@@ -54,7 +59,7 @@ export function Dashboard(): JSX.Element {
           subtitle="in graphic"
           cardType="graphic"
           backColor="var(--green)"
-          loading
+          loading={loading || undefined}
         />
         <Card
           title="Analyze"
@@ -62,7 +67,7 @@ export function Dashboard(): JSX.Element {
           cardType="outputs"
           backColor="var(--shape)"
           openModal={handleOpenInfoModal}
-          loading
+          loading={loading || undefined}
         />
         <InfoModal
           chart={chart}
@@ -75,7 +80,7 @@ export function Dashboard(): JSX.Element {
           subtitle="in table"
           cardType="table"
           backColor="var(--green)"
-          loading
+          loading={loading || undefined}
         />
       </MenuDash>
       <Body>

@@ -84,7 +84,7 @@ export function ChartModal({
     } catch (err) {
       console.error(err);
       setDisabled(false);
-      setError(err.response.data.error);
+      setError('Internal server error');
     }
   }
 
@@ -163,6 +163,7 @@ export function ChartModal({
           onChange={event => handleOnChangeNumber(event, 'maximum')}
           placeholder="Maximum"
           width="48%"
+          min="1"
           step="1"
           required
         />
@@ -173,6 +174,7 @@ export function ChartModal({
           placeholder="Minimum"
           width="48%"
           step="1"
+          min="1"
           required
         />
         <Input

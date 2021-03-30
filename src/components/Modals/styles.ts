@@ -96,11 +96,31 @@ export const List = styled.ul`
     width: 100%;
     display: flex;
     align-items: center;
+    padding: 0.15rem 0;
     justify-content: space-between;
   }
 
   span {
     display: inline-block;
     color: var(--title-color);
+  }
+
+  .order {
+    max-width: 13rem;
+    white-space: nowrap;
+    overflow-x: scroll;
+
+    &::-webkit-scrollbar-track-piece {
+      display: none;
+    }
+
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: var(--radius);
+      background: var(--text-body);
+    }
   }
 `;

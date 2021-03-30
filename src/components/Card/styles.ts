@@ -5,7 +5,7 @@ import { large, medium } from '../../utils/media';
 interface StyledCardProps {
   cardType: string;
   backColor: string;
-  loading: boolean;
+  loading: boolean | undefined;
 }
 
 interface TextProps {

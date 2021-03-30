@@ -70,7 +70,7 @@ export function Card(props: CardProps): JSX.Element {
       onClick={handleClickCard}
       cardType={cardType}
       backColor={backColor}
-      loading={loading!}
+      loading={loading || undefined}
     >
       <TopLine>
         <h2> {title} </h2>

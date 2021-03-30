@@ -1,81 +1,56 @@
-import { Server, Model, Response } from 'miragejs';
+import { Server, Response } from 'miragejs';
 import shortid from 'shortid';
 
-export default new Server({
-  models: {
-    chart: Model
-  },
+interface Chart {
+  id: string;
+}
 
+export default new Server({
   routes() {
     this.timing = 500;
     this.namespace = 'api';
 
-    this.get('/chart', schema => {
-      return schema.db.charts;
+    this.get('/chart', () => {
+      const storage = localStorage.getItem('charts');
+      const data = JSON.parse(storage ?? '[]');
+
+      return new Response(200, {}, data);
     });
 
     this.get('/chart/:id', (schema, request) => {
       const id = request.params.id;
+      const storage = localStorage.getItem('charts');
+      const parsed: Chart[] = JSON.parse(storage ?? '[]');
+      const data = parsed.find(chart => chart.id === id);
 
-      return schema.db.charts.find(id);
+      return new Response(200, {}, data);
     });
 
     this.post('/chart', (schema, request) => {
-      let body = JSON.parse(request.requestBody);
+      const body = JSON.parse(request.requestBody);
 
       body.updatedAt = new Date();
-      body = schema.db.charts.insert(body);
       body.id = shortid.generate();
-      return body;
+
+      return new Response(201, {}, body);
     });
 
     this.put('/chart/:id', (schema, request) => {
-      const body = JSON.parse(request.requestBody);
       const id = request.params.id;
+      const body = JSON.parse(request.requestBody);
 
       body.updatedAt = new Date();
+      body.id = id;
 
-      return schema.db.charts.update(id, body);
+      return new Response(200, {}, body);
     });
 
-    this.delete('/chart/:id', (schema, request) => {
-      const id = request.params.id;
-      schema.db.charts.remove(id);
-
+    this.delete('/chart/:id', () => {
       return new Response(204);
     });
 
-    this.delete('/chart', schema => {
-      schema.db.charts.remove();
-
+    this.delete('/chart', () => {
       return new Response(204);
     });
   }
-
-  /* seeds(server) {
-    server.db.loadData({
-      charts: [
-        {
-          id: shortid.generate(),
-          title: 'Hello World',
-          entity: 'Space',
-          intervalS: 5,
-          frequency: 2,
-          maximum: 100,
-          minimum: 0,
-          updatedAt: new Date()
-        },
-        {
-          id: shortid.generate(),
-          title: 'Work',
-          entity: 'push-up',
-          intervalS: 10,
-          frequency: 4,
-          maximum: 50,
-          minimum: -50,
-          updatedAt: new Date('2021-02-12 09:00:00')
-        }
-      ]
-    });
-  } */
 });

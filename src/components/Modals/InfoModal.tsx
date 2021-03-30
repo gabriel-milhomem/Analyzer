@@ -14,17 +14,23 @@ interface InfoModalProps {
   listYNumber: number[];
 }
 
-export function InfoModal(props: InfoModalProps): JSX.Element {
+export function InfoModal(props: InfoModalProps): JSX.Element | null {
   const { isOpen, onModalClose, chart, listYNumber } = props;
   const { frequency, intervalS, title } = chart;
+  if (!listYNumber.length) return null;
 
+  const order = Utils.getOrder(listYNumber).join(', ');
   const { variance, standardDeviation } = Utils.getDispersalParams(listYNumber);
-  const { max, min, amplitude } = Utils.getLimitsParams(listYNumber);
-  const [points, geometric, harmonic, arithmetic, mode, median] = [
+  const { max, min, range, midRange } = Utils.getLimitsParams(listYNumber);
+  const { lower, upper, interRange, midhinge } = Utils.getQuartilesParams(
+    listYNumber
+  );
+  const [points, geometric, quadratic, harmonic, arithmetic, mode, median] = [
     Utils.getTotalPoints(frequency, intervalS),
-    Utils.getGeometricAverage(listYNumber),
-    Utils.getHarmonicAverage(listYNumber),
-    Utils.getArithmeticAverage(listYNumber),
+    Utils.getGeometricMean(listYNumber),
+    Utils.getQuadraticMean(listYNumber),
+    Utils.getHarmonicMean(listYNumber),
+    Utils.getArithmeticMean(listYNumber),
     Utils.getMode(listYNumber),
     Utils.getMedian(listYNumber)
   ];
@@ -33,26 +39,31 @@ export function InfoModal(props: InfoModalProps): JSX.Element {
     'Total of points': points,
     'Max. Number': max,
     'Min. Number': min,
-    Amplitude: amplitude,
+    Range: range,
+    'Mid-Range': midRange.toFixed(1),
     Mode: mode,
-    Median: median.toFixed(2),
-    'Arithmetic average': arithmetic.toFixed(2),
-    'Geometric average': geometric.toFixed(2),
-    'Harmonic average': harmonic.toFixed(2),
+    Median: median.toFixed(1),
+    'Arithmetic Mean': arithmetic.toFixed(2),
+    'Geometric Mean': geometric.toFixed(2),
+    'Quadratic Mean': quadratic.toFixed(2),
+    'Harmonic Mean': harmonic.toFixed(2),
     Variance: variance.toFixed(2),
-    'Standard deviation': standardDeviation.toFixed(2)
+    'Standard Deviation': standardDeviation.toFixed(2),
+    'Lower quartile': lower.toFixed(1),
+    'Upper quartile': upper.toFixed(1),
+    'Interquartile Range': interRange.toFixed(1),
+    Midhinge: midhinge.toFixed(2),
+    Order: order
   };
 
   const inputsAllowed = [
-    'Entity',
-    'Maximum',
-    'Minimum',
-    'Frequency',
-    'Interval'
+    'entity',
+    'maximum',
+    'minimum',
+    'frequency',
+    'intervalS'
   ];
   const inputs = Object.entries(chart).filter(([key]) => {
-    key = key.charAt(0).toUpperCase();
-    if (key === 'IntervalS') key = key.slice(0, -1);
     return inputsAllowed.includes(key);
   });
 
@@ -73,25 +84,27 @@ export function InfoModal(props: InfoModalProps): JSX.Element {
           <img src={closeImg} alt="close icon" />
         </button>
         <hr />
-        <Subtitle> Input </Subtitle>
+        <Subtitle> Inputs </Subtitle>
         <List>
           {inputs.map(([key, value]) => {
             return (
               <li key={key}>
-                <span>{key}</span>
-                <p> {value} </p>
+                <span>{Utils.capitalizeAllAndTrim(key)}</span>
+                <p>{value}</p>
               </li>
             );
           })}
         </List>
         <hr />
-        <Subtitle> Output </Subtitle>
+        <Subtitle> Outputs </Subtitle>
         <List>
-          {Object.entries(outputs).map(([key, value]) => {
+          {Object.entries(outputs).map(([key, value], i, array) => {
             return (
               <li key={key}>
                 <span> {key} </span>
-                <p> {value} </p>
+                <p className={i === array.length - 1 ? 'order' : undefined}>
+                  {value}
+                </p>
               </li>
             );
           })}

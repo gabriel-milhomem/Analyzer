@@ -15,6 +15,7 @@ export const Menu = styled.nav`
 
     &::-webkit-scrollbar {
       width: 0px;
+      display: none;
     }
   }
 `;
