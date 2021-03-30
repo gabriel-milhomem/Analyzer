@@ -18,13 +18,16 @@ export function InfoModal(props: InfoModalProps): JSX.Element {
   const { isOpen, onModalClose, chart, listYNumber } = props;
   const { frequency, intervalS, title } = chart;
 
-  const points = Utils.getTotalPoints(frequency, intervalS);
-  const { max, min, amplitude } = Utils.getLimitsParams(listYNumber);
-  const { geometric, harmonic, arithmetic } = Utils.getAveragesParams(
-    listYNumber
-  );
   const { variance, standardDeviation } = Utils.getDispersalParams(listYNumber);
-  const { mode, median } = Utils.getModeAndMedian(listYNumber);
+  const { max, min, amplitude } = Utils.getLimitsParams(listYNumber);
+  const [points, geometric, harmonic, arithmetic, mode, median] = [
+    Utils.getTotalPoints(frequency, intervalS),
+    Utils.getGeometricAverage(listYNumber),
+    Utils.getHarmonicAverage(listYNumber),
+    Utils.getArithmeticAverage(listYNumber),
+    Utils.getMode(listYNumber),
+    Utils.getMedian(listYNumber)
+  ];
 
   const outputs = {
     'Total of points': points,

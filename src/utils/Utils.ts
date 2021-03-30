@@ -13,22 +13,11 @@ interface LimitsParams {
   amplitude: number;
 }
 
-interface AveragesParams {
-  geometric: number;
-  harmonic: number;
-  arithmetic: number;
-}
-
 type Dict = { [key: number]: number };
 
 interface DispersalParams {
   variance: number;
   standardDeviation: number;
-}
-
-interface MMParams {
-  mode: number;
-  median: number;
 }
 
 interface RandomListProps extends ValidationProps {}
@@ -120,27 +109,36 @@ class Utils {
     return limits;
   }
 
-  getAveragesParams(list: number[]): AveragesParams {
+  getArithmeticAverage(list: number[]): number {
     const total = list.length;
     const listSum = list.reduce((acc, item) => acc + item, 0);
+
+    const arithmetic = listSum / total;
+    return arithmetic;
+  }
+
+  getGeometricAverage(list: number[]): number {
+    const total = list.length;
     const listProduct = list.reduce((acc, item) => acc * item, 1);
+
+    const geometric = listProduct ** (1 / total);
+    return geometric;
+  }
+
+  getHarmonicAverage(list: number[]): number {
     const noZeroList = list.filter(item => item !== 0);
     const sumNoZero = noZeroList.reduce((acc, item) => acc + 1 / item, 0);
     const totalNoZero = noZeroList.length;
 
-    const arithmetic = listSum / total;
-    const geometric = listProduct ** (1 / total);
     const harmonic = totalNoZero / sumNoZero;
 
-    const averages = { arithmetic, geometric, harmonic };
-
-    return averages;
+    return harmonic;
   }
 
   getDispersalParams(list: number[]): DispersalParams {
     const total = list.length;
-    const arithmetic = this.getAveragesParams(list).arithmetic;
-    const deviationArray = list.map(item => Math.abs(item - arithmetic));
+    const arithmetic = this.getArithmeticAverage(list);
+    const deviationArray = list.map(item => item - arithmetic);
     const variance =
       deviationArray.reduce((acc, item) => item ** 2 + acc, 0) / total;
 
@@ -149,17 +147,9 @@ class Utils {
     return dispersal;
   }
 
-  getModeAndMedian(list: number[]): MMParams {
-    const sortedList = list.sort((a, b) => a - b);
-    const total = sortedList.length;
-    const middle = Math.floor(total / 2);
-    const median =
-      total % 2 === 1
-        ? sortedList[middle]
-        : (sortedList[middle] + sortedList[middle + 1]) / 2;
-
+  getMode(list: number[]): number {
     const dict: Dict = {};
-    sortedList.forEach(item => {
+    list.forEach(item => {
       if (dict[item] === undefined) {
         dict[item] = 0;
       }
@@ -167,9 +157,20 @@ class Utils {
     });
 
     const mode = Math.max(...Object.values(dict));
-    const mmparams = { median, mode };
 
-    return mmparams;
+    return mode;
+  }
+
+  getMedian(list: number[]): number {
+    const sortedList = list.sort((a, b) => a - b);
+    const total = sortedList.length;
+    const middle = Math.floor(total / 2);
+    const median =
+      total % 2 === 1
+        ? sortedList[middle]
+        : (sortedList[middle] + sortedList[middle - 1]) / 2;
+
+    return median;
   }
 }
 
