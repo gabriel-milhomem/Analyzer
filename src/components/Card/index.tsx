@@ -7,7 +7,7 @@ import {
 } from 'react-icons/io5';
 import { useHistory } from 'react-router-dom';
 
-import { useCharts } from '../../hooks/useCharts';
+import { useCharts } from '../../hooks';
 import { StyledCard, TopLine, Text, Footer } from './styles';
 
 interface Dispatcher {
@@ -26,11 +26,12 @@ interface CardProps {
   backColor: string;
   openModal?: () => void;
   footerText?: boolean;
+  loading?: boolean;
 }
 
 export function Card(props: CardProps): JSX.Element {
   const { setEditChartId, charts } = useCharts();
-  const { title, subtitle, cardType, backColor } = props;
+  const { title, subtitle, cardType, backColor, loading } = props;
 
   const date = new Date(charts[0]?.updatedAt);
   const history = useHistory();
@@ -69,6 +70,7 @@ export function Card(props: CardProps): JSX.Element {
       onClick={handleClickCard}
       cardType={cardType}
       backColor={backColor}
+      loading={loading!}
     >
       <TopLine>
         <h2> {title} </h2>

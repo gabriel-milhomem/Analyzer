@@ -12,7 +12,6 @@ export const Container = styled(InfoSection)`
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 3rem;
-  padding-right: 0.5rem;
 `;
 
 export const Table = styled.table`

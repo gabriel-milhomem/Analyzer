@@ -2,7 +2,7 @@ import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import Modal from 'react-modal';
 
 import closeImg from '../../assets/close.svg';
-import { useCharts } from '../../hooks/useCharts';
+import { useCharts } from '../../hooks';
 import { success } from '../../libs/toast';
 import Utils from '../../utils/Utils';
 import { Title, Input, Error, Form } from './styles';

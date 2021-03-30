@@ -5,6 +5,7 @@ import { large, medium } from '../../utils/media';
 interface StyledCardProps {
   cardType: string;
   backColor: string;
+  loading: boolean;
 }
 
 interface TextProps {
@@ -23,6 +24,8 @@ export const StyledCard = styled.button<StyledCardProps>`
   border-radius: var(--radius);
   transition: filter 0.2s;
   overflow-x: scroll;
+
+  pointer-events: ${props => (props.loading ? 'none' : 'initial')};
 
   ${large} {
     min-width: 27rem;

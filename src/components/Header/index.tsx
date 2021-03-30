@@ -2,7 +2,7 @@ import { IoStatsChart, IoHomeOutline } from 'react-icons/io5';
 import { useHistory } from 'react-router-dom';
 
 import logoImg from '../../assets/logo.png';
-import { useCharts } from '../../hooks/useCharts';
+import { useCharts } from '../../hooks';
 import { StyledHeader, Content, LeftBox, HeaderButton, Brand } from './styles';
 
 export function Header(): JSX.Element {

@@ -1,6 +1,8 @@
 import Modal from 'react-modal';
 
 import closeImg from '../../assets/close.svg';
+import { Chart } from '../../hooks/useCharts';
+import Utils from '../../utils/Utils';
 import { InfoSection, Subtitle, InfoTitle, List } from './styles';
 
 Modal.setAppElement('#root');
@@ -8,12 +10,49 @@ Modal.setAppElement('#root');
 interface InfoModalProps {
   isOpen: boolean;
   onModalClose: () => void;
+  chart: Chart;
+  listYNumber: number[];
 }
 
-export function InfoModal({
-  isOpen,
-  onModalClose
-}: InfoModalProps): JSX.Element {
+export function InfoModal(props: InfoModalProps): JSX.Element {
+  const { isOpen, onModalClose, chart, listYNumber } = props;
+  const { frequency, intervalS, title } = chart;
+
+  const points = Utils.getTotalPoints(frequency, intervalS);
+  const { max, min, amplitude } = Utils.getLimitsParams(listYNumber);
+  const { geometric, harmonic, arithmetic } = Utils.getAveragesParams(
+    listYNumber
+  );
+  const { variance, standardDeviation } = Utils.getDispersalParams(listYNumber);
+  const { mode, median } = Utils.getModeAndMedian(listYNumber);
+
+  const outputs = {
+    'Total of points': points,
+    'Max. Number': max,
+    'Min. Number': min,
+    Amplitude: amplitude,
+    Mode: mode,
+    Median: median.toFixed(2),
+    'Arithmetic average': arithmetic.toFixed(2),
+    'Geometric average': geometric.toFixed(2),
+    'Harmonic average': harmonic.toFixed(2),
+    Variance: variance.toFixed(2),
+    'Standard deviation': standardDeviation.toFixed(2)
+  };
+
+  const inputsAllowed = [
+    'Entity',
+    'Maximum',
+    'Minimum',
+    'Frequency',
+    'Interval'
+  ];
+  const inputs = Object.entries(chart).filter(([key]) => {
+    key = key.charAt(0).toUpperCase();
+    if (key === 'IntervalS') key = key.slice(0, -1);
+    return inputsAllowed.includes(key);
+  });
+
   return (
     <Modal
       className="react-modal-content"
@@ -22,7 +61,7 @@ export function InfoModal({
       onRequestClose={onModalClose}
     >
       <InfoSection>
-        <InfoTitle> Titulo do gráfico </InfoTitle>
+        <InfoTitle> {title} </InfoTitle>
         <button
           type="button"
           className="react-modal-close"
@@ -33,74 +72,26 @@ export function InfoModal({
         <hr />
         <Subtitle> Input </Subtitle>
         <List>
-          <li>
-            <span>Entity: </span>
-            <p> 34</p>
-          </li>
-          <li>
-            <span>Maximum: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Minimum: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Frequency: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Interval: </span>
-            <p>34</p>
-          </li>
+          {inputs.map(([key, value]) => {
+            return (
+              <li key={key}>
+                <span>{key}</span>
+                <p> {value} </p>
+              </li>
+            );
+          })}
         </List>
         <hr />
         <Subtitle> Output </Subtitle>
         <List>
-          <li>
-            <span>Total of points: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Max. Number: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Min. Number: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Amplitude: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Mode: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Median: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Arithmetic average: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Variance: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Standard deviation: </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Geometric average </span>
-            <p>34</p>
-          </li>
-          <li>
-            <span>Harmonic average: </span>
-            <p>34</p>
-          </li>
+          {Object.entries(outputs).map(([key, value]) => {
+            return (
+              <li key={key}>
+                <span> {key} </span>
+                <p> {value} </p>
+              </li>
+            );
+          })}
         </List>
       </InfoSection>
     </Modal>

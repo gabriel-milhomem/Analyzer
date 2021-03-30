@@ -15,21 +15,21 @@ interface AppProviderProps {
   children: ReactNode;
 }
 
-interface Charts {
+export interface Chart {
   id: string;
   title: string;
+  entity: string;
   maximum: number;
   minimum: number;
   frequency: number;
   intervalS: number;
-  entity: string;
   updatedAt: string;
 }
 
-type ChartInput = Omit<Charts, 'id' | 'updatedAt'>;
+type ChartInput = Omit<Chart, 'id' | 'updatedAt'>;
 
 interface ChartContextData {
-  charts: Charts[];
+  charts: Chart[];
   createChart: (chart: ChartInput) => Promise<void>;
   updateChart: (chart: ChartInput, id: string) => Promise<void>;
   deleteChart: (id: string) => Promise<void>;
@@ -46,7 +46,7 @@ const ChartContext = createContext<ChartContextData>({} as ChartContextData);
 function ChartProvider({ children }: AppProviderProps): JSX.Element {
   const [editChartId, setEditChartId] = useState('');
   const [refresh, setRefresh] = useState(0);
-  const [charts, setCharts] = useLocalStorage<Charts[]>('charts', []);
+  const [charts, setCharts] = useLocalStorage<Chart[]>('charts', []);
 
   const [loading, setLoading] = useLoading();
 

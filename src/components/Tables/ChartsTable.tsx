@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { BsTrash2 } from 'react-icons/bs';
 import Loader from 'react-loader-spinner';
 
-import { useCharts } from '../../hooks/useCharts';
+import { useCharts } from '../../hooks';
 import { ChartTableRow } from './ChartTableRow';
 import {
   Table,

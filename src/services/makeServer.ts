@@ -14,6 +14,12 @@ export default new Server({
       return schema.db.charts;
     });
 
+    this.get('/chart/:id', (schema, request) => {
+      const id = request.params.id;
+
+      return schema.db.charts.find(id);
+    });
+
     this.post('/chart', (schema, request) => {
       let body = JSON.parse(request.requestBody);
 

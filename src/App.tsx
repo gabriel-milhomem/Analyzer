@@ -5,8 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 import { Header } from './components/Header';
-import ChartProvider, { useCharts } from './hooks/useCharts';
-import { usePageTracking } from './hooks/usePageTracking';
+import { usePageTracking, useCharts } from './hooks/';
+import ChartProvider from './hooks/useCharts';
 import ToastProvider, { error } from './libs/toast';
 import { Dashboard } from './pages/Dashboard';
 import { Home } from './pages/Home';

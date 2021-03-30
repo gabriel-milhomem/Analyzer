@@ -2,7 +2,7 @@ import { MouseEvent } from 'react';
 import { BsEye, BsPencil, BsTrash } from 'react-icons/bs';
 import { useHistory } from 'react-router-dom';
 
-import { useCharts } from '../../hooks/useCharts';
+import { useCharts } from '../../hooks';
 
 interface Chart {
   id: string;
