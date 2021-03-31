@@ -16,6 +16,8 @@ export default css`
 
     --font-poppins: 'Poppins', sans-serif;
     --font-saira: 'Saira Stencil One', cursive;
+    --font-orienta: 'Orienta', sans-serif;
+    --font-zilla: 'Zilla Slab Highlight', cursive;
 
     --radius: 0.25rem;
     --shadow: 0px 3px 4px rgba(0, 0, 0, 0.25);

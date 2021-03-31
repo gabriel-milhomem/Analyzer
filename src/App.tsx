@@ -1,15 +1,14 @@
-import { ComponentType } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+// import { ComponentType } from 'react';
+import { Route, Switch /* Redirect */ } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 import { Header } from './components/Header';
-import { usePageTracking, useCharts } from './hooks/';
+import { usePageTracking /* useCharts */ } from './hooks/';
 import ChartProvider from './hooks/useCharts';
-import ToastProvider, { error } from './libs/toast';
-import { Dashboard } from './pages/Dashboard';
-import { Home } from './pages/Home';
+import ToastProvider /* error */ from './libs/toast';
+import { Home, Dashboard, Login } from './pages';
 import GlobalStyle from './styles';
 
 export function App(): JSX.Element {
@@ -20,7 +19,8 @@ export function App(): JSX.Element {
       <GlobalStyle />
       <Header />
       <Switch>
-        <ProtectedRoute path="/dashboard/:id" component={Dashboard} />
+        <Route path="/dashboard/:id" component={Dashboard} />
+        <Route path="/login" component={Login} />
         <Route path="/" exact component={Home} />
       </Switch>
       <ToastProvider />
@@ -28,7 +28,7 @@ export function App(): JSX.Element {
   );
 }
 
-interface RouteProps {
+/* interface RouteProps {
   path: string;
   component: ComponentType<any>;
 }
@@ -42,4 +42,4 @@ function ProtectedRoute(props: RouteProps): JSX.Element {
     return <Redirect to="/" />;
   }
   return <Route {...props} />;
-}
+} */

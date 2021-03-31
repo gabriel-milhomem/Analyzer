@@ -5,8 +5,8 @@ import closeImg from '../../assets/close.svg';
 import { useCharts } from '../../hooks';
 import { success } from '../../libs/toast';
 import Utils from '../../utils/Utils';
+import { SubmitButton } from '../SubmitButton';
 import { Title, Input, Error, Form } from './styles';
-import { SubmitButton } from './SubmitButton';
 
 interface ChartModalProps {
   isOpen: boolean;
