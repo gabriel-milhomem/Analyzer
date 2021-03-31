@@ -2,13 +2,22 @@ import { IoStatsChart, IoHomeOutline } from 'react-icons/io5';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import logoImg from '../../assets/logo.png';
-import { useCharts } from '../../hooks';
-import { StyledHeader, Content, LeftBox, HeaderButton, Brand } from './styles';
+import logoutImg from '../../assets/logout.svg';
+import { useCharts, useToken } from '../../hooks';
+import {
+  StyledHeader,
+  Content,
+  LeftBox,
+  HeaderButton,
+  Brand,
+  RightBox
+} from './styles';
 
 export function Header(): JSX.Element | null {
   const location = useLocation();
   const history = useHistory();
   const { refresh, setRefresh } = useCharts();
+  const { logout } = useToken();
   const isDashboard = location.pathname.includes('dashboard');
   if (location.pathname === '/login') return null;
 
@@ -21,6 +30,11 @@ export function Header(): JSX.Element | null {
     setRefresh(refresh + 1);
   }
 
+  async function handleLogout(): Promise<void> {
+    history.push('/');
+    await logout();
+  }
+
   return (
     <StyledHeader>
       <Content>
@@ -28,10 +42,13 @@ export function Header(): JSX.Element | null {
           <img src={logoImg} alt="Analyzer's logo" />
           <Brand> Analyzer </Brand>
         </LeftBox>
-        <HeaderButton type="button" onClick={handleOnClick}>
-          <h2> {isDashboard ? 'Home' : 'My Charts'} </h2>
-          {isDashboard ? <IoHomeOutline /> : <IoStatsChart />}
-        </HeaderButton>
+        <RightBox>
+          <img src={logoutImg} alt="logout icon" onClick={handleLogout} />
+          <HeaderButton type="button" onClick={handleOnClick}>
+            <h2> {isDashboard ? 'Home' : 'My Charts'} </h2>
+            {isDashboard ? <IoHomeOutline /> : <IoStatsChart />}
+          </HeaderButton>
+        </RightBox>
       </Content>
     </StyledHeader>
   );

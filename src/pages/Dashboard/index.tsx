@@ -46,6 +46,13 @@ export function Dashboard(): JSX.Element {
         const data = await Server.getOneChart(id, config);
 
         setChart(data);
+        const { maximum, minimum, frequency, intervalS } = data;
+
+        setListYNumber(
+          Utils.generateRandomList({ maximum, minimum, frequency, intervalS })
+        );
+        // setListXTime(Utils.generateTimestamp(frequency, intervalS));
+        // setListPoints(Utils.createListPoints(listYNumber, listXTime));
       } catch (err) {
         console.error(err);
         if (err instanceof NotFoundError) {
@@ -60,14 +67,8 @@ export function Dashboard(): JSX.Element {
         error('Internal server error');
       }
     }
-    setLoading(getChartById(id));
-    const { maximum, minimum, frequency, intervalS } = chart;
 
-    setListYNumber(
-      Utils.generateRandomList({ maximum, minimum, frequency, intervalS })
-    );
-    // setListXTime(Utils.generateTimestamp(frequency, intervalS));
-    // setListPoints(Utils.createListPoints(listYNumber, listXTime));
+    setLoading(getChartById(id));
   }, [id]);
 
   return (
@@ -78,7 +79,7 @@ export function Dashboard(): JSX.Element {
           subtitle="in graphic"
           cardType="graphic"
           backColor="var(--green)"
-          loading={loading || undefined}
+          loading={loading}
         />
         <Card
           title="Analyze"
@@ -86,7 +87,7 @@ export function Dashboard(): JSX.Element {
           cardType="outputs"
           backColor="var(--shape)"
           openModal={handleOpenInfoModal}
-          loading={loading || undefined}
+          loading={loading}
         />
         <InfoModal
           chart={chart}
@@ -99,7 +100,7 @@ export function Dashboard(): JSX.Element {
           subtitle="in table"
           cardType="table"
           backColor="var(--green)"
-          loading={loading || undefined}
+          loading={loading}
         />
       </MenuDash>
       <Body>

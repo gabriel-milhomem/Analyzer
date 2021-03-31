@@ -21,7 +21,7 @@ interface UserContextData {
 }
 
 export interface Config {
-  headers?: {
+  headers: {
     Authorization?: string;
   };
 }

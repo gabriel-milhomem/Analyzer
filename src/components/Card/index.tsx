@@ -62,7 +62,7 @@ export function Card(props: CardProps): JSX.Element {
         break;
       default:
         if (charts[0]) {
-          history.push(`/dashboard/${charts.id}`);
+          history.push(`/dashboard/${charts[0].id}`);
           break;
         }
         error('Selected chart does not exist');
@@ -75,7 +75,7 @@ export function Card(props: CardProps): JSX.Element {
       onClick={handleClickCard}
       cardType={cardType}
       backColor={backColor}
-      loading={loading || undefined}
+      loading={loading}
     >
       <TopLine>
         <h2> {title} </h2>

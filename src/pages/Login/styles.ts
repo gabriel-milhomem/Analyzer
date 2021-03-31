@@ -14,9 +14,11 @@ export const Form = styled.form`
 
 export const Logo = styled.h1`
   font-family: var(--font-zilla);
-  font-size: 5.62rem;
-  line-height: 7.5rem;
+  font-size: 5rem;
+  line-height: 6rem;
   letter-spacing: 0.6rem;
+  position: relative;
+  left: 0.5rem;
 
   text-transform: lowercase;
   text-align: center;
@@ -31,14 +33,13 @@ export const Headline = styled.h2`
 
   text-align: center;
   position: relative;
-  top: -1.25rem;
+  top: -0.8rem;
   color: #fff;
 `;
 
 export const StyledLogin = styled.main`
   width: 100%;
   height: 100vh;
-  padding: 5vh 0;
   background: var(--gradient);
 
   display: flex;
@@ -48,6 +49,6 @@ export const StyledLogin = styled.main`
 `;
 
 export const Column = styled.div`
-  width: 90%;
+  width: 80%;
   max-width: 400px;
 `;

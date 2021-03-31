@@ -5,7 +5,6 @@ import {
   useContext,
   useState
 } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import { NotFoundError, UnauthorizedError } from '../errors';
 import { warning, error } from '../libs/toast';
@@ -51,13 +50,12 @@ function ChartProvider({ children }: ChartProviderProps): JSX.Element {
   const [refresh, setRefresh] = useState(0);
   const [charts, setCharts] = useLocalStorage<Chart[]>('charts', []);
   const [loading, setLoading] = useLoading();
-  const location = useLocation();
   const { token } = useToken();
 
   const config: Config = { headers: { Authorization: `Bearer ${token}` } };
 
   useEffect(() => {
-    if (location.pathname !== '/') return;
+    if (!token) return;
     async function getCharts(): Promise<void> {
       try {
         const data = await Server.getCharts(config);

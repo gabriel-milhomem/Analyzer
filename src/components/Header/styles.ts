@@ -26,6 +26,19 @@ export const LeftBox = styled.div`
   }
 `;
 
+export const RightBox = styled.div`
+  display: flex;
+  align-items: center;
+
+  img {
+    cursor: pointer;
+    transition: filter 0.2s;
+    &:hover {
+      filter: brightness(0.8);
+    }
+  }
+`;
+
 export const Brand = styled.h1`
   font-family: var(--font-saira);
   color: #fff;
@@ -43,7 +56,7 @@ export const HeaderButton = styled.button`
   border-radius: var(--radius);
   height: 2.8rem;
   padding: 0 1.5rem;
-  margin-left: 1rem;
+  margin-left: 1.5rem;
 
   &:hover {
     filter: brightness(0.9);

@@ -4,7 +4,7 @@
   "main": "./server.js",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack serve",
+    "dev": "cross-env NODE_ENV=development webpack serve",
     "build": "cross-env NODE_ENV=production webpack",
     "lint": "eslint --ext js, jsx, ts,tsx --fix",
     "format": "prettier \"**/*.+(js|jsx|ts|tsx)\" --write"
