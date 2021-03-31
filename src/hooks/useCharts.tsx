@@ -10,8 +10,9 @@ import { warning, error } from '../libs/toast';
 import api from '../services/api';
 import { useLoading } from './useLoading';
 import { useLocalStorage } from './useLocalStorage';
+import { useUser } from './useUser';
 
-interface AppProviderProps {
+interface ChartProviderProps {
   children: ReactNode;
 }
 
@@ -43,12 +44,14 @@ interface ChartContextData {
 
 const ChartContext = createContext<ChartContextData>({} as ChartContextData);
 
-function ChartProvider({ children }: AppProviderProps): JSX.Element {
+function ChartProvider({ children }: ChartProviderProps): JSX.Element {
   const [editChartId, setEditChartId] = useState('');
   const [refresh, setRefresh] = useState(0);
   const [charts, setCharts] = useLocalStorage<Chart[]>('charts', []);
-
   const [loading, setLoading] = useLoading();
+  const { token } = useUser();
+
+  const config = { headers: { Authorization: `Bearer ${token}` } };
 
   useEffect(() => {
     async function getCharts(): Promise<void> {
@@ -63,6 +66,12 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
         }
       } catch (err) {
         console.error(err);
+        const status = err.response.status;
+        const message = err.response.data.message;
+
+        if (status === 401) {
+          error(message);
+        }
         error('Internal server error');
       }
     }
@@ -71,13 +80,13 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
   }, [refresh]);
 
   async function createChart(chart: ChartInput): Promise<void> {
-    const response = await api.post('/chart', chart);
+    const response = await api.post('/chart', chart, config);
 
     setCharts([response.data, ...charts]);
   }
 
   async function updateChart(chart: ChartInput, id: string): Promise<void> {
-    const response = await api.put(`/chart/${id}`, chart);
+    const response = await api.put(`/chart/${id}`, chart, config);
     const auxCharts = charts.filter(chart => chart.id !== id);
 
     setCharts([response.data, ...auxCharts]);
@@ -85,7 +94,7 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
 
   async function deleteChart(id: string): Promise<void> {
     try {
-      await api.delete(`/chart/${id}`);
+      await api.delete(`/chart/${id}`, config);
 
       const auxCharts = charts.filter(chart => chart.id !== id);
       setCharts([...auxCharts]);
@@ -94,18 +103,28 @@ function ChartProvider({ children }: AppProviderProps): JSX.Element {
       }
     } catch (err) {
       console.error(err);
+      const status = err.response.status;
+      const message = err.response.data.message;
+
+      if (status === 401) {
+        error(message);
+      }
       error('Internal server error');
     }
   }
 
   async function deleteAllChart(): Promise<void> {
     try {
-      await api.delete('/chart');
-
       setCharts([]);
-      localStorage.removeItem('charts');
+      await api.delete('/chart', config);
     } catch (err) {
       console.error(err);
+      const status = err.response.status;
+      const message = err.response.data.message;
+
+      if (status === 401) {
+        error(message);
+      }
       error('Internal server error');
     }
   }

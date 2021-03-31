@@ -70,6 +70,7 @@ module.exports = {
         env: {
           API_BASE_URL: process.env.API_BASE_URL ? `'${process.env.API_BASE_URL}'` : '\'http://localhost:9000\'',
           TRACKING_ID: '\'UA-190646289-2\'',
+          JWT_SECRET_KEY: 'p4SsW0rDs3Cr3tAn4LY3z3R'
         },
       },
     })

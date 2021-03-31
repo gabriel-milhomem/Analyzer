@@ -4,7 +4,7 @@ import { useParams, useHistory } from 'react-router-dom';
 
 import { Card } from '../../components/Card';
 import { InfoModal } from '../../components/Modals';
-import { useLoading } from '../../hooks';
+import { useLoading, useUser } from '../../hooks';
 import { Chart } from '../../hooks/useCharts';
 import { error } from '../../libs/toast';
 import api from '../../services/api';
@@ -22,6 +22,9 @@ export function Dashboard(): JSX.Element {
   const [chart, setChart] = useState<Chart>({} as Chart);
   const [loading, setLoading] = useLoading();
   const history = useHistory();
+  const { token } = useUser();
+
+  const config = { headers: { Authorization: `Bearer ${token}` } };
 
   const handleOpenInfoModal = (): void => setInfoModal(true);
   const handleCloseInfoModal = (): void => setInfoModal(false);
@@ -30,7 +33,7 @@ export function Dashboard(): JSX.Element {
   useEffect(() => {
     async function getChartById(id: string): Promise<void> {
       try {
-        const { data } = await api.get(`/chart/${id}`);
+        const { data } = await api.get(`/chart/${id}`, config);
 
         if (data) {
           const { maximum, minimum, frequency, intervalS } = data;

@@ -1,17 +1,42 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { Input, Error } from '../../components/Modals/styles';
 import { SubmitButton } from '../../components/SubmitButton';
+import { useUser } from '../../hooks';
+import { success } from '../../libs/toast';
+import Utils from '../../utils/Utils';
 import { Form, Headline, StyledLogin, Column, Logo } from './styles';
 
 export function Login(): JSX.Element {
-  const [name, setName] = useState('');
+  let [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [disabled] = useState(false);
-  const [error] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  const [error, setError] = useState('');
+  const { login } = useUser();
+  const history = useHistory();
+
+  async function handleSubmitLogin(event: FormEvent): Promise<void> {
+    try {
+      setDisabled(true);
+      event.preventDefault();
+
+      name = Utils.capitalizeAllAndTrim(name);
+      let body = { name, email };
+      body = Utils.sanitizeHtml(body);
+
+      await login(body);
+      history.push('/');
+      success(`Welcome back ${name}!`);
+    } catch (err) {
+      console.error(err);
+      setDisabled(false);
+      setError('Internal server error');
+    }
+  }
 
   return (
-    <StyledLogin>
+    <StyledLogin onSubmit={handleSubmitLogin}>
       <Column>
         <Logo> analyzer </Logo>
         <Headline> generate. view. study. </Headline>

@@ -84,6 +84,13 @@ export function ChartModal({
     } catch (err) {
       console.error(err);
       setDisabled(false);
+      const status = err.response.status;
+      const message = err.response.data.message;
+
+      if (status === 401) {
+        setError(message);
+      }
+
       setError('Internal server error');
     }
   }
