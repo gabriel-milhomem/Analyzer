@@ -16,7 +16,7 @@ const defaultOptions: ToastOptions = {
 const Toast = styled(ToastContainer)`
   color: #fff;
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 
   .Toastify__toast--success {
     background: var(--green);

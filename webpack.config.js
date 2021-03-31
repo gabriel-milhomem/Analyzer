@@ -15,14 +15,16 @@ module.exports = {
     filename: 'bundle.js'
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
+
   devServer: {
-    contentBase: path.resolve(__dirname, 'public'),
+    contentBase: path.join(__dirname, 'public'),
     port: 9000,
     compress: true,
     publicPath: '/',
     hot: true,
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -68,11 +70,9 @@ module.exports = {
     new webpack.DefinePlugin({
       process: {
         env: {
-          API_BASE_URL: process.env.API_BASE_URL ? `'${process.env.API_BASE_URL}'` : '\'http://localhost:9000\'',
-          TRACKING_ID: '\'UA-190646289-2\'',
-          JWT_SECRET_KEY: 'p4SsW0rDs3Cr3tAn4LY3z3R'
-        },
-      },
+          TRACKING_ID: '\'UA-190646289-2\''
+        }
+      }
     })
   ].filter(Boolean)
 };

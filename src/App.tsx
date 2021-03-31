@@ -5,9 +5,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 import { Header } from './components/Header';
-import { usePageTracking, useUser } from './hooks/';
+import { usePageTracking, useToken } from './hooks';
 import ChartProvider from './hooks/useCharts';
-import UserProvider from './hooks/useUser';
+import UserProvider from './hooks/useToken';
 import ToastProvider from './libs/toast';
 import { Home, Dashboard, Login } from './pages';
 import GlobalStyle from './styles';
@@ -22,15 +22,14 @@ export function App(): JSX.Element {
         <Header />
         <Switch>
           <ProtectedRoute path="/dashboard/:id" component={Dashboard} />
-          <ProtectedRoute path="/login" component={Login} />
-          <UnprotectedRoute path="/" exact component={Home} />
+          <UnprotectedRoute path="/login" component={Login} />
+          <ProtectedRoute path="/" exact component={Home} />
         </Switch>
         <ToastProvider />
       </ChartProvider>
     </UserProvider>
   );
 }
-
 interface RouteProps {
   path: string;
   component: ComponentType<any>;
@@ -38,7 +37,7 @@ interface RouteProps {
 }
 
 function ProtectedRoute(props: RouteProps): JSX.Element {
-  const { token } = useUser();
+  const { token } = useToken();
 
   if (!token) {
     return <Redirect to="/login" />;
@@ -47,7 +46,7 @@ function ProtectedRoute(props: RouteProps): JSX.Element {
 }
 
 function UnprotectedRoute(props: RouteProps): JSX.Element {
-  const { token } = useUser();
+  const { token } = useToken();
 
   if (token) {
     return <Redirect to="/" />;

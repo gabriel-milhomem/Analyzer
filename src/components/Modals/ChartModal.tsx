@@ -2,6 +2,7 @@ import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import Modal from 'react-modal';
 
 import closeImg from '../../assets/close.svg';
+import { NotFoundError, UnauthorizedError } from '../../errors';
 import { useCharts } from '../../hooks';
 import { success } from '../../libs/toast';
 import Utils from '../../utils/Utils';
@@ -84,11 +85,13 @@ export function ChartModal({
     } catch (err) {
       console.error(err);
       setDisabled(false);
-      const status = err.response.status;
-      const message = err.response.data.message;
-
-      if (status === 401) {
-        setError(message);
+      if (err instanceof NotFoundError) {
+        setError(err.message);
+        return;
+      }
+      if (err instanceof UnauthorizedError) {
+        setError(err.message);
+        return;
       }
 
       setError('Internal server error');
@@ -200,7 +203,7 @@ export function ChartModal({
           onChange={event => handleOnChangeNumber(event, 'intervalS')}
           placeholder="Interval (s)"
           width="48%"
-          min="1"
+          min="0"
           step="1"
           required
         />

@@ -1,5 +1,7 @@
 import sanitizer from 'sanitize-html';
 
+import { Points } from '../pages/Dashboard';
+
 interface ValidationProps {
   maximum: number;
   minimum: number;
@@ -89,10 +91,6 @@ class Utils {
   }
 
   generateTimestamp(frequency: number, interval: number): number[] {
-    if (frequency >= 1) {
-      return Array.from(Array(interval).keys());
-    }
-
     const points = this.getTotalPoints(frequency, interval);
     const intervalPerPoint = interval / frequency / interval;
 
@@ -100,10 +98,10 @@ class Utils {
 
     timeArray = timeArray.map((item, i) => {
       if (i === 0) {
-        return Number(intervalPerPoint.toFixed(1));
+        return Number(intervalPerPoint.toFixed(2));
       }
 
-      return Number(((i + 1) * intervalPerPoint).toFixed(1));
+      return Number(((i + 1) * intervalPerPoint).toFixed(2));
     });
 
     return timeArray;
@@ -231,6 +229,32 @@ class Utils {
     };
 
     return quartiles;
+  }
+
+  createListPoints(listNumber: number[], listTime: number[]): Points[] {
+    const total = listNumber.length;
+    const arithmetic = this.getArithmeticMean(listNumber);
+    const detourList = listNumber.map(item => item - arithmetic);
+    const freqAbsoluteList = listNumber.map(
+      item => listNumber.filter(num => item === num).length
+    );
+    const freqRelativeList = freqAbsoluteList.map(item => (item / total) * 100);
+
+    const listPoints: Points[] = [];
+    listTime.forEach((time, i) => {
+      const point = {
+        id: i + 1,
+        value: listNumber[i],
+        time,
+        freqAbsolute: freqAbsoluteList[i],
+        freqRelative: freqRelativeList[i],
+        detour: detourList[i]
+      };
+
+      listPoints.push(point);
+    });
+
+    return listPoints;
   }
 }
 

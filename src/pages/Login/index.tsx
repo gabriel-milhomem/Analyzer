@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { Input, Error } from '../../components/Modals/styles';
 import { SubmitButton } from '../../components/SubmitButton';
-import { useUser } from '../../hooks';
+import { useToken } from '../../hooks';
 import { success } from '../../libs/toast';
 import Utils from '../../utils/Utils';
 import { Form, Headline, StyledLogin, Column, Logo } from './styles';
@@ -13,7 +13,7 @@ export function Login(): JSX.Element {
   const [email, setEmail] = useState('');
   const [disabled, setDisabled] = useState(false);
   const [error, setError] = useState('');
-  const { login } = useUser();
+  const { login } = useToken();
   const history = useHistory();
 
   async function handleSubmitLogin(event: FormEvent): Promise<void> {
@@ -22,12 +22,18 @@ export function Login(): JSX.Element {
       event.preventDefault();
 
       name = Utils.capitalizeAllAndTrim(name);
+      if (name.split(' ').length === 1) {
+        setError('Type the full name');
+        setDisabled(false);
+
+        return;
+      }
       let body = { name, email };
       body = Utils.sanitizeHtml(body);
 
       await login(body);
+      success(`Welcome ${name}!`);
       history.push('/');
-      success(`Welcome back ${name}!`);
     } catch (err) {
       console.error(err);
       setDisabled(false);
@@ -61,7 +67,9 @@ export function Login(): JSX.Element {
             width="100%"
             required
           />
-          <Error> {error || ''} </Error>
+          <Error>
+            <p> {error || ''} </p>
+          </Error>
           <SubmitButton type="submit" disabled={disabled} isLoading={disabled}>
             {disabled ? '' : 'Login'}
           </SubmitButton>

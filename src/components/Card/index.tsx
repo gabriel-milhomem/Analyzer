@@ -8,6 +8,7 @@ import {
 import { useHistory } from 'react-router-dom';
 
 import { useCharts } from '../../hooks';
+import { error } from '../../libs/toast';
 import { StyledCard, TopLine, Text, Footer } from './styles';
 
 interface Dispatcher {
@@ -60,7 +61,11 @@ export function Card(props: CardProps): JSX.Element {
         props.openModal!();
         break;
       default:
-        history.push(`/dashboard/${charts[0]?.id}`);
+        if (charts[0]) {
+          history.push(`/dashboard/${charts.id}`);
+          break;
+        }
+        error('Selected chart does not exist');
         break;
     }
   }

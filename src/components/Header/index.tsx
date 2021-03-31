@@ -1,14 +1,16 @@
 import { IoStatsChart, IoHomeOutline } from 'react-icons/io5';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import logoImg from '../../assets/logo.png';
 import { useCharts } from '../../hooks';
 import { StyledHeader, Content, LeftBox, HeaderButton, Brand } from './styles';
 
-export function Header(): JSX.Element {
+export function Header(): JSX.Element | null {
+  const location = useLocation();
   const history = useHistory();
   const { refresh, setRefresh } = useCharts();
-  const isDashboard = location.href.includes('dashboard');
+  const isDashboard = location.pathname.includes('dashboard');
+  if (location.pathname === '/login') return null;
 
   function handleOnClick(): void {
     if (isDashboard) {

@@ -5,18 +5,18 @@ export const Form = styled.form`
   flex-direction: column;
 
   padding: 2.5rem 1.25rem;
-  margin-top: 3.12rem;
+  margin-top: 2rem;
 
   background: var(--shape);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
 `;
 
 export const Logo = styled.h1`
   font-family: var(--font-zilla);
   font-size: 5.62rem;
   line-height: 7.5rem;
-  letter-spacing: 0.375rem;
+  letter-spacing: 0.6rem;
 
   text-transform: lowercase;
   text-align: center;
@@ -26,11 +26,12 @@ export const Logo = styled.h1`
 
 export const Headline = styled.h2`
   font-family: var(--font-orienta);
-  font-size: 2.75rem;
+  font-size: 1.8rem;
   line-height: 4rem;
 
   text-align: center;
-  margin-left: -1.3rem; /*see*/
+  position: relative;
+  top: -1.25rem;
   color: #fff;
 `;
 
@@ -38,6 +39,7 @@ export const StyledLogin = styled.main`
   width: 100%;
   height: 100vh;
   padding: 5vh 0;
+  background: var(--gradient);
 
   display: flex;
   flex-direction: column;

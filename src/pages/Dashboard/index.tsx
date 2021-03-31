@@ -1,57 +1,73 @@
 import { useState, useEffect } from 'react';
 import Loader from 'react-loader-spinner';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { Card } from '../../components/Card';
 import { InfoModal } from '../../components/Modals';
-import { useLoading, useUser } from '../../hooks';
+import { NotFoundError, UnauthorizedError } from '../../errors';
+import { useLoading, useToken } from '../../hooks';
 import { Chart } from '../../hooks/useCharts';
 import { error } from '../../libs/toast';
-import api from '../../services/api';
+import Server from '../../utils/Server';
 import Utils from '../../utils/Utils';
 import { StyledDashboard, MenuDash, Body } from './styles';
 
-interface useParamsPops {
+interface UseParamsPops {
   id: string;
+}
+
+export interface Points {
+  id: number;
+  value: number;
+  time: number;
+  freqAbsolute: number;
+  freqRelative: number;
+  detour: number;
 }
 
 export function Dashboard(): JSX.Element {
   const [infoModal, setInfoModal] = useState(false);
   // const [listXTime, setListXTime] = useState<number[]>([]);
   const [listYNumber, setListYNumber] = useState<number[]>([]);
+  // const [listPoints, setListPoints] = useState<Points[]>([]);
   const [chart, setChart] = useState<Chart>({} as Chart);
   const [loading, setLoading] = useLoading();
-  const history = useHistory();
-  const { token } = useUser();
+  const { token } = useToken();
 
   const config = { headers: { Authorization: `Bearer ${token}` } };
 
   const handleOpenInfoModal = (): void => setInfoModal(true);
   const handleCloseInfoModal = (): void => setInfoModal(false);
-  const { id } = useParams() as useParamsPops;
+  const { id } = useParams() as UseParamsPops;
 
   useEffect(() => {
     async function getChartById(id: string): Promise<void> {
       try {
-        const { data } = await api.get(`/chart/${id}`, config);
+        const data = await Server.getOneChart(id, config);
 
-        if (data) {
-          const { maximum, minimum, frequency, intervalS } = data;
-          setChart(data);
-          setListYNumber(
-            Utils.generateRandomList({ maximum, minimum, frequency, intervalS })
-          );
-          // setListXTime(Utils.generateTimestamp(frequency, intervalS));
-        } else {
-          history.push('/');
-          error('Selected chart does not exist');
-        }
+        setChart(data);
       } catch (err) {
         console.error(err);
+        if (err instanceof NotFoundError) {
+          error(err.message);
+          return;
+        }
+        if (err instanceof UnauthorizedError) {
+          error(err.message);
+          return;
+        }
+
         error('Internal server error');
       }
     }
     setLoading(getChartById(id));
+    const { maximum, minimum, frequency, intervalS } = chart;
+
+    setListYNumber(
+      Utils.generateRandomList({ maximum, minimum, frequency, intervalS })
+    );
+    // setListXTime(Utils.generateTimestamp(frequency, intervalS));
+    // setListPoints(Utils.createListPoints(listYNumber, listXTime));
   }, [id]);
 
   return (

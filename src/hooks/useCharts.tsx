@@ -5,12 +5,14 @@ import {
   useContext,
   useState
 } from 'react';
+import { useLocation } from 'react-router-dom';
 
+import { NotFoundError, UnauthorizedError } from '../errors';
 import { warning, error } from '../libs/toast';
-import api from '../services/api';
+import Server from '../utils/Server';
 import { useLoading } from './useLoading';
 import { useLocalStorage } from './useLocalStorage';
-import { useUser } from './useUser';
+import { useToken, Config } from './useToken';
 
 interface ChartProviderProps {
   children: ReactNode;
@@ -24,10 +26,10 @@ export interface Chart {
   minimum: number;
   frequency: number;
   intervalS: number;
-  updatedAt: string;
+  updatedAt: Date;
 }
 
-type ChartInput = Omit<Chart, 'id' | 'updatedAt'>;
+export type ChartInput = Omit<Chart, 'id' | 'updatedAt'>;
 
 interface ChartContextData {
   charts: Chart[];
@@ -49,14 +51,16 @@ function ChartProvider({ children }: ChartProviderProps): JSX.Element {
   const [refresh, setRefresh] = useState(0);
   const [charts, setCharts] = useLocalStorage<Chart[]>('charts', []);
   const [loading, setLoading] = useLoading();
-  const { token } = useUser();
+  const location = useLocation();
+  const { token } = useToken();
 
-  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const config: Config = { headers: { Authorization: `Bearer ${token}` } };
 
   useEffect(() => {
+    if (location.pathname !== '/') return;
     async function getCharts(): Promise<void> {
       try {
-        const { data } = await api.get('/chart');
+        const data = await Server.getCharts(config);
         if (refresh > 1) {
           setCharts([...data.reverse()]);
         }
@@ -65,13 +69,11 @@ function ChartProvider({ children }: ChartProviderProps): JSX.Element {
           warning("It's empty, create a new chart");
         }
       } catch (err) {
-        console.error(err);
-        const status = err.response.status;
-        const message = err.response.data.message;
-
-        if (status === 401) {
-          error(message);
+        if (err instanceof UnauthorizedError) {
+          error(err.message);
+          return;
         }
+
         error('Internal server error');
       }
     }
@@ -80,35 +82,34 @@ function ChartProvider({ children }: ChartProviderProps): JSX.Element {
   }, [refresh]);
 
   async function createChart(chart: ChartInput): Promise<void> {
-    const response = await api.post('/chart', chart, config);
+    const data = await Server.postChart(chart, config);
 
-    setCharts([response.data, ...charts]);
+    setCharts([data, ...charts]);
   }
 
   async function updateChart(chart: ChartInput, id: string): Promise<void> {
-    const response = await api.put(`/chart/${id}`, chart, config);
+    const data = await Server.putChart(chart, id, config);
     const auxCharts = charts.filter(chart => chart.id !== id);
 
-    setCharts([response.data, ...auxCharts]);
+    setCharts([data, ...auxCharts]);
   }
 
   async function deleteChart(id: string): Promise<void> {
     try {
-      await api.delete(`/chart/${id}`, config);
+      const auxCharts = await Server.deleteOneChart(id, charts, config);
 
-      const auxCharts = charts.filter(chart => chart.id !== id);
       setCharts([...auxCharts]);
-      if (!auxCharts.length) {
-        localStorage.removeItem('charts');
-      }
     } catch (err) {
       console.error(err);
-      const status = err.response.status;
-      const message = err.response.data.message;
-
-      if (status === 401) {
-        error(message);
+      if (err instanceof NotFoundError) {
+        error(err.message);
+        return;
       }
+      if (err instanceof UnauthorizedError) {
+        error(err.message);
+        return;
+      }
+
       error('Internal server error');
     }
   }
@@ -116,15 +117,13 @@ function ChartProvider({ children }: ChartProviderProps): JSX.Element {
   async function deleteAllChart(): Promise<void> {
     try {
       setCharts([]);
-      await api.delete('/chart', config);
+      await Server.deleteAll(config);
     } catch (err) {
-      console.error(err);
-      const status = err.response.status;
-      const message = err.response.data.message;
-
-      if (status === 401) {
-        error(message);
+      if (err instanceof UnauthorizedError) {
+        error(err.message);
+        return;
       }
+
       error('Internal server error');
     }
   }

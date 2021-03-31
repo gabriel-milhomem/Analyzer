@@ -1,14 +1,15 @@
 import { createContext, ReactNode, useContext } from 'react';
 
+import { UnauthorizedError } from '../errors';
 import { error } from '../libs/toast';
-import api from '../services/api';
+import Server from '../utils/Server';
 import { useLocalStorage } from './useLocalStorage';
 
 interface UserProviderProps {
   children: ReactNode;
 }
 
-interface UserInput {
+export interface UserInput {
   name: string;
   email: string;
 }
@@ -19,28 +20,33 @@ interface UserContextData {
   logout: () => Promise<void>;
 }
 
+export interface Config {
+  headers?: {
+    Authorization?: string;
+  };
+}
+
 const UserContext = createContext<UserContextData>({} as UserContextData);
 
 function UserProvider({ children }: UserProviderProps): JSX.Element {
   const [token, setToken] = useLocalStorage<string>('user', '');
+  const config: Config = { headers: { Authorization: `Bearer ${token}` } };
 
   async function login(user: UserInput): Promise<void> {
-    const response = await api.post('/login', user);
+    const data = await Server.postLogin(user);
 
-    setToken(response.data);
+    setToken(data);
   }
 
   async function logout(): Promise<void> {
     try {
       setToken('');
-      await api.post('/logout');
+      await Server.postLogout(config);
     } catch (err) {
       console.error(err);
-      const status = err.response.status;
-      const message = err.response.data.message;
-
-      if (status === 401) {
-        error(message);
+      if (err instanceof UnauthorizedError) {
+        error(err.message);
+        return;
       }
 
       error('Internal server error');
@@ -56,7 +62,7 @@ function UserProvider({ children }: UserProviderProps): JSX.Element {
 
 export default UserProvider;
 
-export function useUser(): UserContextData {
+export function useToken(): UserContextData {
   const user = useContext(UserContext);
 
   return user;
