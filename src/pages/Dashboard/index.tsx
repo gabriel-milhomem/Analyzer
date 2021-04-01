@@ -17,7 +17,7 @@ interface UseParamsPops {
 
 export function Dashboard(): JSX.Element {
   const [infoModal, setInfoModal] = useState(false);
-  const [isTable, setIsTable] = useState(true);
+  const [isTable, setIsTable] = useState(false);
   const [chart, setChart] = useState<Chart>({} as Chart);
   const [loading, setLoading] = useLoading();
   const { token } = useToken();

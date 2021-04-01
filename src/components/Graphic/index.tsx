@@ -24,7 +24,7 @@ export function Graphic({ chart }: GraphicProps): JSX.Element {
     event.stopPropagation();
   }
 
-  const data = listYNumber.map((item, i) => ({ x: listXTime[i], y: item }));
+  const data = listYNumber?.map((item, i) => ({ x: listXTime[i], y: item }));
   return (
     <>
       <Header>

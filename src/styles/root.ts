@@ -16,9 +16,9 @@ export default css`
     --gradient: linear-gradient(
       to bottom,
       #5429cc,
-      #9873ff,
-      #b296ff,
-      #9873ff,
+      #6c4bc9,
+      #7355c9,
+      #6c4bc9,
       #5429cc
     );
 
