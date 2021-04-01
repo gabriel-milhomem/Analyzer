@@ -1,7 +1,7 @@
 ![logo](./public/favicon.png)
 
 # Analyzer
-Analyzer platform, a manager of charts, tables and analyze the statistic of the event. You can build, visualize, analyse with our graphic generator system
+Analyzer platform, a manager of charts and tables. You can build, visualize, analyse with our graphic generator system and see all the statistic output to random datasets
 
 ## Features
 - Simple login authentication system
