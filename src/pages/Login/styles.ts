@@ -41,14 +41,19 @@ export const StyledLogin = styled.main`
   width: 100%;
   height: 100vh;
   background: var(--gradient);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
+export const Column = styled.div`
+  width: 60%;
+  max-width: 400px;
+  padding-top: 4vh;
+  padding-bottom: 25vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`;
-
-export const Column = styled.div`
-  width: 80%;
-  max-width: 400px;
 `;

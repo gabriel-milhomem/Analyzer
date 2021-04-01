@@ -17,17 +17,17 @@ interface LimitsParams {
 }
 
 interface QuartilesParams {
-  lower: number;
-  upper: number;
-  interRange: number;
-  midhinge: number;
+  lower: number | null;
+  upper: number | null;
+  interRange: number | null;
+  midhinge: number | null;
 }
 
 type Dict = { [key: number]: number };
 
 interface DispersalParams {
-  variance: number;
-  standardDeviation: number;
+  variance: number | null;
+  standardDeviation: number | null;
 }
 
 interface RandomListProps extends ValidationProps {}
@@ -87,7 +87,9 @@ class Utils {
   }
 
   createNumberBetween(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+    const randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
+
+    return randomNumber;
   }
 
   generateTimestamp(frequency: number, interval: number): number[] {
@@ -108,7 +110,9 @@ class Utils {
   }
 
   getTotalPoints(frequency: number, interval: number): number {
-    return Math.round(frequency * interval);
+    const points = Math.round(frequency * interval);
+
+    return points;
   }
 
   getOrder(list: number[]): number[] {
@@ -120,7 +124,7 @@ class Utils {
     const max = Math.max(...list);
     const min = Math.min(...list);
     const range = max - min;
-    const midRange = (max + min) / 2;
+    const midRange = Number(((max + min) / 2).toFixed(1));
 
     const limits = { max, min, range, midRange };
 
@@ -132,7 +136,7 @@ class Utils {
     const listSum = list.reduce((acc, item) => acc + item, 0);
 
     const arithmetic = listSum / total;
-    return arithmetic;
+    return Number(arithmetic.toFixed(2));
   }
 
   getGeometricMean(list: number[]): number {
@@ -140,7 +144,7 @@ class Utils {
     const listProduct = list.reduce((acc, item) => acc * item, 1);
 
     const geometric = listProduct ** (1 / total);
-    return geometric;
+    return Number(geometric.toFixed(2));
   }
 
   getQuadraticMean(list: number[]): number {
@@ -149,7 +153,7 @@ class Utils {
 
     const quadratic = Math.sqrt(sumQuadratic / total);
 
-    return quadratic;
+    return Number(quadratic.toFixed(2));
   }
 
   getHarmonicMean(list: number[]): number {
@@ -158,19 +162,23 @@ class Utils {
 
     const harmonic = total / sumHarmonic;
 
-    return harmonic;
+    return Number(harmonic.toFixed(2));
   }
 
   getDispersalParams(list: number[]): DispersalParams {
     const total = list.length;
+    if (total === 1) return { variance: null, standardDeviation: null };
+
     const arithmetic = this.getArithmeticMean(list);
     const deviationArray = list.map(item => item - arithmetic);
     const sum = deviationArray.reduce((acc, item) => item ** 2 + acc, 0);
-    const variance = sum / (total - 1);
+
+    const variance = Number((sum / (total - 1)).toFixed(2));
+    const standardDeviation = Number(Math.sqrt(variance).toFixed(2));
 
     const dispersal = {
       variance,
-      standardDeviation: Math.sqrt(variance)
+      standardDeviation
     };
 
     return dispersal;
@@ -194,7 +202,7 @@ class Utils {
       return 'None';
     }
 
-    return filtered[0][0];
+    return Number(filtered[0][0]);
   }
 
   getMedian(list: number[]): number {
@@ -206,12 +214,19 @@ class Utils {
         ? sortedList[middle]
         : (sortedList[middle] + sortedList[middle - 1]) / 2;
 
-    return median;
+    return Number(median.toFixed(1));
   }
 
   getQuartilesParams(list: number[]): QuartilesParams {
     const sortedList = this.getOrder(list);
     const total = sortedList.length;
+    if (total <= 2)
+      return {
+        lower: null,
+        upper: null,
+        interRange: null,
+        midhinge: null
+      };
     const middle = Math.floor(total / 2);
 
     const halfLower = sortedList.slice(0, middle);
@@ -224,8 +239,8 @@ class Utils {
     const quartiles = {
       lower,
       upper,
-      interRange: upper - lower,
-      midhinge: (upper + lower) / 2
+      interRange: Number((upper - lower).toFixed(2)),
+      midhinge: Number(((upper + lower) / 2).toFixed(2))
     };
 
     return quartiles;
@@ -235,7 +250,7 @@ class Utils {
     const total = listNumber.length;
     const arithmetic = this.getArithmeticMean(listNumber);
     const detourList = listNumber.map(item =>
-      Number((item - arithmetic).toFixed(1))
+      Number((item - arithmetic).toFixed(2))
     );
     const freqAbsoluteList = listNumber.map(
       item => listNumber.filter(num => item === num).length
@@ -248,7 +263,7 @@ class Utils {
       value: listNumber[i],
       time,
       freqAbsolute: freqAbsoluteList[i],
-      freqRelative: freqRelativeList[i],
+      freqRelative: Number(freqRelativeList[i].toFixed(2)),
       detour: detourList[i]
     }));
 

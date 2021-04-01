@@ -38,19 +38,21 @@ export function InfoModal(props: InfoModalProps): JSX.Element {
     'Max. Number': max,
     'Min. Number': min,
     Range: range,
-    'Mid-Range': midRange.toFixed(1),
+    'Mid-Range': midRange,
     Mode: mode,
-    Median: median.toFixed(1),
-    'Arithmetic Mean': arithmetic.toFixed(2),
-    'Geometric Mean': geometric.toFixed(2),
-    'Quadratic Mean': quadratic.toFixed(2),
-    'Harmonic Mean': harmonic.toFixed(2),
-    Variance: variance.toFixed(2),
-    'Standard Deviation': standardDeviation.toFixed(2),
-    'Lower quartile': lower.toFixed(1),
-    'Upper quartile': upper.toFixed(1),
-    'Interquartile Range': interRange.toFixed(1),
-    Midhinge: midhinge.toFixed(2),
+    Median: median,
+    'Arithmetic Mean': arithmetic,
+    'Geometric Mean': geometric,
+    'Quadratic Mean': quadratic,
+    'Harmonic Mean': harmonic,
+    Variance: variance || 'None',
+    'Standard Deviation': standardDeviation
+      ? standardDeviation!.toFixed(2)
+      : 'None',
+    'Lower quartile': lower || 'None',
+    'Upper quartile': upper || 'None',
+    'Interquartile Range': interRange || 'None',
+    Midhinge: midhinge || 'None',
     Order: order
   };
 
