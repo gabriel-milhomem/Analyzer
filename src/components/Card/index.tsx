@@ -28,6 +28,7 @@ interface CardProps {
   openModal?: () => void;
   footerText?: boolean;
   loading?: boolean;
+  setIsTable?: (toggle: boolean) => void;
 }
 
 export function Card(props: CardProps): JSX.Element {
@@ -54,8 +55,10 @@ export function Card(props: CardProps): JSX.Element {
         props.openModal!();
         break;
       case 'graphic':
+        props.setIsTable!(false);
         break;
       case 'table':
+        props.setIsTable!(true);
         break;
       case 'outputs':
         props.openModal!();

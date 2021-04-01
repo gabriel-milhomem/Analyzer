@@ -79,10 +79,10 @@ class Server {
     configs: Config
   ): Promise<Chart> {
     await this.timeout(400);
-    await this.getOneChart(id, configs);
+    const chart = await this.getOneChart(id, configs);
     await this.middleware(configs);
     const data: Chart = {
-      ...body,
+      ...chart,
       updatedAt: new Date().toJSON(),
       id
     };
@@ -91,7 +91,7 @@ class Server {
   }
 
   async getOneChart(id: string, configs: Config): Promise<Chart> {
-    await this.timeout(200);
+    await this.timeout(500);
     await this.middleware(configs);
     const storage = localStorage.getItem('charts');
     const parsed: Chart[] = JSON.parse(storage ?? '[]');

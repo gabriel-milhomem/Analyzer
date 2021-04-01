@@ -1,11 +1,22 @@
 import { transparentize, darken } from 'polished';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import { medium } from '../../utils/media';
+import { medium, small } from '../../utils/media';
 import { InfoSection } from '../Modals/styles';
 
 interface BodyProps {
   disabled: boolean;
+  isListPoints: boolean;
+}
+
+type Orientation = -1 | 0 | 1;
+
+interface TimeProp {
+  time: Orientation;
+}
+
+interface ValueProp {
+  value: Orientation;
 }
 
 export const Container = styled(InfoSection).attrs({ as: 'div' })`
@@ -16,8 +27,9 @@ export const Container = styled(InfoSection).attrs({ as: 'div' })`
   }
 
   ${medium} {
-    overflow-y: none;
+    overflow-y: hidden;
     height: auto;
+    max-height: none;
   }
 `;
 
@@ -61,20 +73,40 @@ export const Body = styled.tbody<BodyProps>`
     background: var(--shape);
     border: 0;
 
-    &:nth-child(2) {
-      color: var(--title-color);
-    }
+    ${props =>
+      props.isListPoints
+        ? css`
+            &:nth-child(1) {
+              color: var(--title-color);
+            }
+            &:nth-child(2) {
+              color: var(--yellow);
+            }
+            &:nth-child(3) {
+              color: var(--blue-light);
+            }
+            &:last-child.red {
+              color: var(--red);
+            }
+            &:last-child.green {
+              color: var(--green);
+            }
+          `
+        : css`
+            &:nth-child(2) {
+              color: var(--title-color);
+            }
+            &:nth-child(1),
+            &:nth-child(5),
+            &:nth-child(6) {
+              cursor: pointer;
+              transition: background 0.2s ease-in-out;
 
-    &:nth-child(1),
-    &:nth-child(5),
-    &:nth-child(6) {
-      cursor: pointer;
-      transition: background 0.2s ease-in-out;
-
-      &:hover {
-        background: ${darken(0.15, '#fff')};
-      }
-    }
+              &:hover {
+                background: ${darken(0.15, '#fff')};
+              }
+            }
+          `}
   }
 `;
 
@@ -83,11 +115,21 @@ export const Header = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
 
   h2 {
     font-family: var(--font-saira);
     color: var(--title-color);
-    font-size: 2rem;
+    font-size: 2em;
+  }
+
+  ${small} {
+    font-size: 0.85rem;
+  }
+
+  ${medium} {
+    font-size: 0.75rem;
   }
 `;
 
@@ -96,9 +138,9 @@ export const RightBox = styled.div`
   align-items: center;
 
   h3 {
-    font-size: 1.25rem;
+    font-size: 1.25em;
     color: var(--title-color);
-    margin-right: 2rem;
+    margin-right: 1em;
     font-weight: 500;
   }
 `;
@@ -111,8 +153,17 @@ export const DeleteButton = styled.button`
   align-items: center;
 
   border-radius: var(--radius);
-  height: 2rem;
-  padding: 0 1rem;
+  height: 2em;
+  padding: 0 1em;
+  font-size: 1rem;
+
+  ${small} {
+    font-size: 0.85rem;
+  }
+
+  ${medium} {
+    font-size: 0.75rem;
+  }
 
   &:hover {
     filter: brightness(0.95);
@@ -120,12 +171,31 @@ export const DeleteButton = styled.button`
 
   p {
     color: #fff;
-    margin-right: 0.6rem;
-    font-size: 0.9rem;
+    margin-right: 0.6em;
+    font-size: 0.9em;
   }
 
   svg {
     color: #fff;
-    font-size: 1.1rem;
+    font-size: 1.1em;
+  }
+`;
+
+export const TimeButton = styled(DeleteButton)<TimeProp>`
+  background-color: ${transparentize(0.15, '#6933ff')};
+
+  svg {
+    display: ${props => (props.time === 0 ? 'none' : 'block')};
+    transform: ${props => (props.time === 1 ? 'rotate(180deg)' : '0')};
+  }
+`;
+
+export const ValueButton = styled(DeleteButton)<ValueProp>`
+  background-color: ${transparentize(0.15, '#f1c40f')};
+  margin-right: 1em;
+
+  svg {
+    display: ${props => (props.value === 0 ? 'none' : 'block')};
+    transform: ${props => (props.value === 1 ? 'rotate(180deg)' : '0')};
   }
 `;

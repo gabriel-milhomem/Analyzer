@@ -98,10 +98,10 @@ class Utils {
 
     timeArray = timeArray.map((item, i) => {
       if (i === 0) {
-        return Number(intervalPerPoint.toFixed(2));
+        return Number(intervalPerPoint.toFixed(3));
       }
 
-      return Number(((i + 1) * intervalPerPoint).toFixed(2));
+      return Number(((i + 1) * intervalPerPoint).toFixed(3));
     });
 
     return timeArray;

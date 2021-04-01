@@ -4,7 +4,7 @@ import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
-import { Header } from './components/Header';
+import { Header } from './components';
 import { usePageTracking, useToken } from './hooks';
 import ChartProvider from './hooks/useCharts';
 import UserProvider from './hooks/useToken';

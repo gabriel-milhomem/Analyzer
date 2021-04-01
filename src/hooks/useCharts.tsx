@@ -40,7 +40,10 @@ export interface Chart {
   listPoints: Point[];
 }
 
-export type ChartInput = Omit<Chart, 'id' | 'updatedAt'>;
+export type ChartInput = Omit<
+  Chart,
+  'id' | 'updatedAt' | 'listYNumber' | 'listXTime' | 'listPoints'
+>;
 
 interface ChartContextData {
   charts: Chart[];

@@ -195,6 +195,7 @@ export function ChartModal({
           width="48%"
           min="0"
           step="0.1"
+          max="100"
           required
         />
         <Input
@@ -205,6 +206,7 @@ export function ChartModal({
           width="48%"
           min="0"
           step="1"
+          max="100"
           required
         />
         <Error>

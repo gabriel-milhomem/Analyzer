@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import Loader from 'react-loader-spinner';
 
-import { Card } from '../../components/Card';
+import { Card, Tables } from '../../components';
 import { ChartModal } from '../../components/Modals';
-import { Tables } from '../../components/Tables';
 import { useCharts } from '../../hooks';
 import { StyledHome, Menu, Body } from './styles';
 
@@ -44,7 +43,7 @@ export function Home(): JSX.Element {
           <Loader type="ThreeDots" height={120} width={120} color="#5429cc" />
         )}
         {!loading && Boolean(refresh) && Boolean(charts.length) && (
-          <Tables openModal={handleOpenChartModal} />
+          <Tables openModal={handleOpenChartModal} isListPoints={false} />
         )}
       </Body>
     </StyledHome>

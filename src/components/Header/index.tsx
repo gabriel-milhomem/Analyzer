@@ -1,5 +1,5 @@
 import { IoStatsChart, IoHomeOutline } from 'react-icons/io5';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import logoImg from '../../assets/logo.png';
 import logoutImg from '../../assets/logout.svg';
@@ -13,13 +13,11 @@ import {
   RightBox
 } from './styles';
 
-export function Header(): JSX.Element | null {
-  const location = useLocation();
+export function Header(): JSX.Element {
   const history = useHistory();
   const { refresh, setRefresh } = useCharts();
   const { logout } = useToken();
   const isDashboard = location.pathname.includes('dashboard');
-  if (location.pathname === '/login') return null;
 
   function handleOnClick(): void {
     if (isDashboard) {

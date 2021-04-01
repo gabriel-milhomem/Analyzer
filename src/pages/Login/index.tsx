@@ -1,8 +1,8 @@
 import { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { SubmitButton } from '../../components';
 import { Input, Error } from '../../components/Modals/styles';
-import { SubmitButton } from '../../components/SubmitButton';
 import { useToken } from '../../hooks';
 import { success } from '../../libs/toast';
 import Utils from '../../utils/Utils';

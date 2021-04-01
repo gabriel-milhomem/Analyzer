@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Loader from 'react-loader-spinner';
 import { useParams } from 'react-router-dom';
 
-import { Card } from '../../components/Card';
+import { Tables, Card, Graphic } from '../../components';
 import { InfoModal } from '../../components/Modals';
 import { NotFoundError, UnauthorizedError } from '../../errors';
 import { useLoading, useToken } from '../../hooks';
@@ -15,11 +15,9 @@ interface UseParamsPops {
   id: string;
 }
 
-// type Type = 'table' | 'graphic';
-
 export function Dashboard(): JSX.Element {
   const [infoModal, setInfoModal] = useState(false);
-  // const [type, setType] = useState<Type>('table');
+  const [isTable, setIsTable] = useState(true);
   const [chart, setChart] = useState<Chart>({} as Chart);
   const [loading, setLoading] = useLoading();
   const { token } = useToken();
@@ -63,6 +61,7 @@ export function Dashboard(): JSX.Element {
           cardType="graphic"
           backColor="var(--green)"
           loading={loading}
+          setIsTable={setIsTable}
         />
         <Card
           title="Analyze"
@@ -85,12 +84,16 @@ export function Dashboard(): JSX.Element {
           cardType="table"
           backColor="var(--green)"
           loading={loading}
+          setIsTable={setIsTable}
         />
       </Menu>
       <Body>
         {loading && (
           <Loader type="ThreeDots" height={120} width={120} color="#5429cc" />
         )}
+
+        {!loading && !isTable && <Graphic chart={chart} />}
+        {!loading && isTable && <Tables chart={chart} isListPoints />}
       </Body>
     </StyledDashboard>
   );
