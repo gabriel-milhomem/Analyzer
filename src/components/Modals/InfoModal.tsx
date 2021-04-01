@@ -11,13 +11,12 @@ interface InfoModalProps {
   isOpen: boolean;
   onModalClose: () => void;
   chart: Chart;
-  listYNumber: number[];
 }
 
 export function InfoModal(props: InfoModalProps): JSX.Element | null {
-  const { isOpen, onModalClose, chart, listYNumber } = props;
-  const { frequency, intervalS, title } = chart;
-  if (!listYNumber.length) return null;
+  const { isOpen, onModalClose, chart } = props;
+  const { frequency, intervalS, title, listYNumber } = chart;
+  if (!listYNumber || listYNumber.length === 0) return null;
 
   const order = Utils.getOrder(listYNumber).join(', ');
   const { variance, standardDeviation } = Utils.getDispersalParams(listYNumber);

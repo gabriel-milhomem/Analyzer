@@ -1,6 +1,6 @@
 import sanitizer from 'sanitize-html';
 
-import { Points } from '../pages/Dashboard';
+import { Point } from '../hooks/useCharts';
 
 interface ValidationProps {
   maximum: number;
@@ -231,28 +231,26 @@ class Utils {
     return quartiles;
   }
 
-  createListPoints(listNumber: number[], listTime: number[]): Points[] {
+  createListPoints(listNumber: number[], listTime: number[]): Point[] {
     const total = listNumber.length;
     const arithmetic = this.getArithmeticMean(listNumber);
-    const detourList = listNumber.map(item => item - arithmetic);
+    const detourList = listNumber.map(item =>
+      Number((item - arithmetic).toFixed(1))
+    );
     const freqAbsoluteList = listNumber.map(
       item => listNumber.filter(num => item === num).length
     );
     const freqRelativeList = freqAbsoluteList.map(item => (item / total) * 100);
 
-    const listPoints: Points[] = [];
-    listTime.forEach((time, i) => {
-      const point = {
-        id: i + 1,
-        value: listNumber[i],
-        time,
-        freqAbsolute: freqAbsoluteList[i],
-        freqRelative: freqRelativeList[i],
-        detour: detourList[i]
-      };
-
-      listPoints.push(point);
-    });
+    let listPoints: Point[] = [];
+    listPoints = listTime.map((time, i) => ({
+      id: i + 1,
+      value: listNumber[i],
+      time,
+      freqAbsolute: freqAbsoluteList[i],
+      freqRelative: freqRelativeList[i],
+      detour: detourList[i]
+    }));
 
     return listPoints;
   }

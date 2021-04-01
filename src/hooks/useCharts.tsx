@@ -17,6 +17,15 @@ interface ChartProviderProps {
   children: ReactNode;
 }
 
+export interface Point {
+  id: number;
+  value: number;
+  time: number;
+  freqAbsolute: number;
+  freqRelative: number;
+  detour: number;
+}
+
 export interface Chart {
   id: string;
   title: string;
@@ -25,7 +34,10 @@ export interface Chart {
   minimum: number;
   frequency: number;
   intervalS: number;
-  updatedAt: Date;
+  updatedAt: string;
+  listYNumber: number[];
+  listXTime: number[];
+  listPoints: Point[];
 }
 
 export type ChartInput = Omit<Chart, 'id' | 'updatedAt'>;

@@ -9,27 +9,17 @@ import { useLoading, useToken } from '../../hooks';
 import { Chart } from '../../hooks/useCharts';
 import { error } from '../../libs/toast';
 import Server from '../../utils/Server';
-import Utils from '../../utils/Utils';
 import { StyledDashboard, MenuDash, Body } from './styles';
 
 interface UseParamsPops {
   id: string;
 }
 
-export interface Points {
-  id: number;
-  value: number;
-  time: number;
-  freqAbsolute: number;
-  freqRelative: number;
-  detour: number;
-}
+// type Type = 'table' | 'graphic';
 
 export function Dashboard(): JSX.Element {
   const [infoModal, setInfoModal] = useState(false);
-  // const [listXTime, setListXTime] = useState<number[]>([]);
-  const [listYNumber, setListYNumber] = useState<number[]>([]);
-  // const [listPoints, setListPoints] = useState<Points[]>([]);
+  // const [type, setType] = useState<Type>('table');
   const [chart, setChart] = useState<Chart>({} as Chart);
   const [loading, setLoading] = useLoading();
   const { token } = useToken();
@@ -46,13 +36,6 @@ export function Dashboard(): JSX.Element {
         const data = await Server.getOneChart(id, config);
 
         setChart(data);
-        const { maximum, minimum, frequency, intervalS } = data;
-
-        setListYNumber(
-          Utils.generateRandomList({ maximum, minimum, frequency, intervalS })
-        );
-        // setListXTime(Utils.generateTimestamp(frequency, intervalS));
-        // setListPoints(Utils.createListPoints(listYNumber, listXTime));
       } catch (err) {
         console.error(err);
         if (err instanceof NotFoundError) {
@@ -93,7 +76,6 @@ export function Dashboard(): JSX.Element {
           chart={chart}
           isOpen={infoModal}
           onModalClose={handleCloseInfoModal}
-          listYNumber={listYNumber}
         />
         <Card
           title="View"

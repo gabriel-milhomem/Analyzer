@@ -32,8 +32,8 @@ export function Login(): JSX.Element {
       body = Utils.sanitizeHtml(body);
 
       await login(body);
-      success(`Welcome ${name}!`);
       history.push('/');
+      success(`Welcome ${name}!`);
     } catch (err) {
       console.error(err);
       setDisabled(false);

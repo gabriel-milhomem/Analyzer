@@ -3,6 +3,7 @@ import shortid from 'shortid';
 import { NotFoundError, UnauthorizedError } from '../errors';
 import { Chart, ChartInput } from '../hooks/useCharts';
 import { UserInput, Config } from '../hooks/useToken';
+import Utils from './Utils';
 
 class Server {
   middleware(req: any): void {
@@ -39,10 +40,25 @@ class Server {
   async postChart(body: ChartInput, configs: Config): Promise<Chart> {
     await this.timeout(500);
     await this.middleware(configs);
+
+    const { maximum, minimum, frequency, intervalS } = body;
+
+    const listYNumber = Utils.generateRandomList({
+      maximum,
+      minimum,
+      frequency,
+      intervalS
+    });
+    const listXTime = Utils.generateTimestamp(frequency, intervalS);
+    const listPoints = Utils.createListPoints(listYNumber, listXTime);
+
     const data: Chart = {
       ...body,
-      updatedAt: new Date(),
-      id: shortid.generate()
+      updatedAt: new Date().toJSON(),
+      id: shortid.generate(),
+      listYNumber,
+      listXTime,
+      listPoints
     };
 
     return data;
@@ -67,7 +83,7 @@ class Server {
     await this.middleware(configs);
     const data: Chart = {
       ...body,
-      updatedAt: new Date(),
+      updatedAt: new Date().toJSON(),
       id
     };
 
