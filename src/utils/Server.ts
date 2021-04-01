@@ -79,12 +79,18 @@ class Server {
     configs: Config
   ): Promise<Chart> {
     await this.timeout(400);
-    const chart = await this.getOneChart(id, configs);
+    const { listPoints, listXTime, listYNumber } = await this.getOneChart(
+      id,
+      configs
+    );
     await this.middleware(configs);
     const data: Chart = {
-      ...chart,
+      ...body,
       updatedAt: new Date().toJSON(),
-      id
+      id,
+      listPoints,
+      listXTime,
+      listYNumber
     };
 
     return data;
