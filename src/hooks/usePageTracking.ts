@@ -10,7 +10,6 @@ export function usePageTracking(): void {
   useEffect(() => {
     if (!window.location.href.includes('localhost')) {
       ReactGA.initialize(trackingId, {
-        debug: true,
         titleCase: false,
         gaOptions: {
           siteSpeedSampleRate: 100
