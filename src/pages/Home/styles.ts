@@ -20,6 +20,13 @@ export const Menu = styled.nav`
   }
 `;
 
+export const Body = styled.section`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 3rem;
+`;
+
 export const StyledHome = styled.main`
   margin: 0 auto;
   max-width: 1120px;

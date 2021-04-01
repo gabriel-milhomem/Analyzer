@@ -9,7 +9,7 @@ import { useLoading, useToken } from '../../hooks';
 import { Chart } from '../../hooks/useCharts';
 import { error } from '../../libs/toast';
 import Server from '../../utils/Server';
-import { StyledDashboard, MenuDash, Body } from './styles';
+import { StyledHome as StyledDashboard, Menu, Body } from '../Home/styles';
 
 interface UseParamsPops {
   id: string;
@@ -56,7 +56,7 @@ export function Dashboard(): JSX.Element {
 
   return (
     <StyledDashboard>
-      <MenuDash>
+      <Menu>
         <Card
           title="View"
           subtitle="in graphic"
@@ -72,11 +72,13 @@ export function Dashboard(): JSX.Element {
           openModal={handleOpenInfoModal}
           loading={loading}
         />
-        <InfoModal
-          chart={chart}
-          isOpen={infoModal}
-          onModalClose={handleCloseInfoModal}
-        />
+        {Boolean(chart.listYNumber) && (
+          <InfoModal
+            chart={chart}
+            isOpen={infoModal}
+            onModalClose={handleCloseInfoModal}
+          />
+        )}
         <Card
           title="View"
           subtitle="in table"
@@ -84,7 +86,7 @@ export function Dashboard(): JSX.Element {
           backColor="var(--green)"
           loading={loading}
         />
-      </MenuDash>
+      </Menu>
       <Body>
         {loading && (
           <Loader type="ThreeDots" height={120} width={120} color="#5429cc" />

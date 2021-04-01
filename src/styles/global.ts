@@ -21,7 +21,7 @@ export default css`
     }
 
     ${small} {
-      font-size: 68.75%;
+      font-size: 62.5%;
     }
   }
 

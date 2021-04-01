@@ -1,22 +1,28 @@
 import { transparentize, darken } from 'polished';
 import styled from 'styled-components';
 
+import { medium } from '../../utils/media';
 import { InfoSection } from '../Modals/styles';
 
 interface BodyProps {
   disabled: boolean;
 }
 
-export const Container = styled(InfoSection)`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 3rem;
+export const Container = styled(InfoSection).attrs({ as: 'div' })`
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  ${medium} {
+    overflow-y: none;
+    height: auto;
+  }
 `;
 
 export const Table = styled.table`
   width: 100%;
-
   border-spacing: 0 0.5rem;
 
   svg {

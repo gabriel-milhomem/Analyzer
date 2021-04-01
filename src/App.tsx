@@ -1,5 +1,5 @@
 import { ComponentType } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
@@ -13,13 +13,14 @@ import { Home, Dashboard, Login } from './pages';
 import GlobalStyle from './styles';
 
 export function App(): JSX.Element {
+  const location = useLocation();
   usePageTracking();
 
   return (
     <UserProvider>
       <ChartProvider>
         <GlobalStyle />
-        <Header />
+        {location.pathname !== '/login' && <Header />}
         <Switch>
           <ProtectedRoute path="/dashboard/:id" component={Dashboard} />
           <UnprotectedRoute path="/login" component={Login} />

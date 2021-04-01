@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import Loader from 'react-loader-spinner';
 
 import { Card } from '../../components/Card';
 import { ChartModal } from '../../components/Modals';
-import { ChartsTable } from '../../components/Tables';
-import { StyledHome, Menu } from './styles';
+import { Tables } from '../../components/Tables';
+import { useCharts } from '../../hooks';
+import { StyledHome, Menu, Body } from './styles';
 
 export function Home(): JSX.Element {
+  const { loading, refresh, charts } = useCharts();
   const [chartModal, setChartModal] = useState(false);
 
   const handleOpenChartModal = (): void => setChartModal(true);
@@ -36,8 +39,14 @@ export function Home(): JSX.Element {
           backColor="var(--green)"
         />
       </Menu>
-
-      <ChartsTable openModal={handleOpenChartModal} />
+      <Body>
+        {loading && (
+          <Loader type="ThreeDots" height={120} width={120} color="#5429cc" />
+        )}
+        {!loading && Boolean(refresh) && Boolean(charts.length) && (
+          <Tables openModal={handleOpenChartModal} />
+        )}
+      </Body>
     </StyledHome>
   );
 }

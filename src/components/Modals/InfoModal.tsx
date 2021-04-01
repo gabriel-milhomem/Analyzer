@@ -13,10 +13,9 @@ interface InfoModalProps {
   chart: Chart;
 }
 
-export function InfoModal(props: InfoModalProps): JSX.Element | null {
+export function InfoModal(props: InfoModalProps): JSX.Element {
   const { isOpen, onModalClose, chart } = props;
   const { frequency, intervalS, title, listYNumber } = chart;
-  if (!listYNumber || listYNumber.length === 0) return null;
 
   const order = Utils.getOrder(listYNumber).join(', ');
   const { variance, standardDeviation } = Utils.getDispersalParams(listYNumber);

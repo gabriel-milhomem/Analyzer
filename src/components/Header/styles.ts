@@ -31,8 +31,11 @@ export const RightBox = styled.div`
   align-items: center;
 
   img {
+    width: 1.5rem;
+    height: 1.5rem;
     cursor: pointer;
     transition: filter 0.2s;
+
     &:hover {
       filter: brightness(0.8);
     }
@@ -56,7 +59,7 @@ export const HeaderButton = styled.button`
   border-radius: var(--radius);
   height: 2.8rem;
   padding: 0 1.5rem;
-  margin-left: 1.5rem;
+  margin-left: 1rem;
 
   &:hover {
     filter: brightness(0.9);
