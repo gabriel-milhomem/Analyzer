@@ -120,6 +120,7 @@ export const Header = styled.header`
 
   h2 {
     font-family: var(--font-saira);
+    user-select: none;
     color: var(--title-color);
     font-size: 2em;
   }

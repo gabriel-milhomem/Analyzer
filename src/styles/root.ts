@@ -13,7 +13,14 @@ export default css`
     --green: #33cc95;
     --blue: #5429cc;
     --blue-light: #6933ff;
-    --gradient: linear-gradient(to bottom, #5429cc, #6933ff, #6933ff, #5429cc);
+    --gradient: linear-gradient(
+      to bottom,
+      #5429cc,
+      #9873ff,
+      #b296ff,
+      #9873ff,
+      #5429cc
+    );
 
     --font-poppins: 'Poppins', sans-serif;
     --font-saira: 'Saira Stencil One', cursive;
