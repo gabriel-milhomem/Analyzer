@@ -49,7 +49,7 @@ export const StyledLogin = styled.main`
 export const Column = styled.div`
   width: 60%;
   max-width: 400px;
-  padding-top: 4vh;
+  padding-top: 10vh;
   padding-bottom: 25vh;
   height: 100vh;
   display: flex;
